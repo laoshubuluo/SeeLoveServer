@@ -5,19 +5,12 @@ package com.seelove.entity.network.request.base;
  * date : 2015/8/12
  * introduce : 请求实体
  */
-public class ActionInfo {
+public class ActionInfo extends AbstractRequestInfo {
 
     int actionId;
 
     public ActionInfo(int actionId) {
         this.actionId = actionId;
-    }
-
-    @Override
-    public String toString() {
-        return "ActionInfo{" +
-                "actionId=" + actionId +
-                '}';
     }
 
     public int getActionId() {

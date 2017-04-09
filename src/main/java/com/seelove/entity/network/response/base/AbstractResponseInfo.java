@@ -1,4 +1,4 @@
-package com.tianyu.seelove.model.entity.network.response.base;
+package com.seelove.entity.network.response.base;
 
 import java.io.Serializable;
 

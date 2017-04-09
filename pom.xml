@@ -3,8 +3,8 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.test.demo</groupId>
-	<artifactId>demo-server</artifactId>
+	<groupId>com.seelove</groupId>
+	<artifactId>seelove</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 
@@ -195,6 +195,15 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>gson</groupId>
+			<artifactId>gson-api</artifactId>
+			<scope>system</scope>
+			<version>2.2.4</version>
+			<systemPath>${project.basedir}/lib/gson-2.2.4.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>
@@ -216,7 +225,7 @@
 	</profiles>
 
 	<build>
-		<finalName>demo-server</finalName>
+		<finalName>see-love</finalName>
 		<resources>
 			<resource>
 				<directory>${profiles.dir}/${package.environment}</directory>

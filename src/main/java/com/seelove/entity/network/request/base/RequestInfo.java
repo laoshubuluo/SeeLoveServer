@@ -34,4 +34,13 @@ public class RequestInfo extends AbstractRequestInfo {
     public void setActionInfo(ActionInfo actionInfo) {
         this.actionInfo = actionInfo;
     }
+
+    @Override
+    public String toString() {
+        return "RequestInfo{" +
+                "actionInfo=" + actionInfo.toString() +
+                ", systemInfo=" + systemInfo.toString() +
+                ", appInfo=" + appInfo.toString() +
+                '}';
+    }
 }

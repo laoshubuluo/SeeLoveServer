@@ -5,8 +5,10 @@ import com.seelove.common.Constant;
 import com.seelove.common.RequestCode;
 import com.seelove.entity.enums.ResponseType;
 import com.seelove.entity.network.request.UserCreateActionInfo;
+import com.seelove.entity.network.request.UserLoginActionInfo;
 import com.seelove.entity.network.request.base.RequestInfo;
 import com.seelove.entity.network.response.base.ResponseInfo;
+import com.seelove.service.UserService;
 import com.seelove.utils.GsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
 
 /**
  * 请求回调接口
@@ -26,6 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class RequestController {
 
     private static Logger logger = LoggerFactory.getLogger(RequestController.class);
+    @Resource
+    private UserService userService;
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -49,8 +55,12 @@ public class RequestController {
         String actionInfoStr = jsonObject.getString("actionInfo");
         switch (requestInfo.getActionInfo().getActionId()) {
             case RequestCode.USER_CREATE:
-                UserCreateActionInfo actionInfo = GsonUtil.fromJson(actionInfoStr, UserCreateActionInfo.class);
-                response = new UserController().create(actionInfo);
+                UserCreateActionInfo userCreateActionInfo = GsonUtil.fromJson(actionInfoStr, UserCreateActionInfo.class);
+                response = userService.create(userCreateActionInfo);
+                break;
+            case RequestCode.USER_LOGIN:
+                UserLoginActionInfo userLoginActionInfo = GsonUtil.fromJson(actionInfoStr, UserLoginActionInfo.class);
+                response = userService.login(userLoginActionInfo);
                 break;
             default:
                 break;

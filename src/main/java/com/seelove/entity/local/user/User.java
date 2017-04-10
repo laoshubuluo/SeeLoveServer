@@ -29,6 +29,9 @@ public class User implements Serializable{
     private String introduce; // 一句话介绍
     private String remark; // 保留域
 
+    // 其他参数
+    private String token4RongCloud;// 融云token
+
     // 显示额外信息
     private int videoCount; // 视频数
     private int followCount; // 关注数
@@ -210,6 +213,14 @@ public class User implements Serializable{
         this.followCount = followCount;
     }
 
+    public String getToken4RongCloud() {
+        return token4RongCloud;
+    }
+
+    public void setToken4RongCloud(String token4RongCloud) {
+        this.token4RongCloud = token4RongCloud;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -232,6 +243,7 @@ public class User implements Serializable{
                 ", marriageName='" + marriageName + '\'' +
                 ", introduce='" + introduce + '\'' +
                 ", remark='" + remark + '\'' +
+                ", token4RongCloud='" + token4RongCloud + '\'' +
                 ", videoCount=" + videoCount +
                 ", followCount=" + followCount +
                 ", followedCount=" + followedCount +

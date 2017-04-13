@@ -5,8 +5,10 @@ import com.seelove.dao.UserDao;
 import com.seelove.entity.enums.ResponseType;
 import com.seelove.entity.local.user.User;
 import com.seelove.entity.network.request.UserCreateActionInfo;
+import com.seelove.entity.network.request.UserFindAllActionInfo;
 import com.seelove.entity.network.request.UserLoginActionInfo;
 import com.seelove.entity.network.response.UserCreateRspInfo;
+import com.seelove.entity.network.response.UserFindAllRspInfo;
 import com.seelove.entity.network.response.UserLoginRspInfo;
 import com.seelove.manager.RongCloudManager;
 import io.rong.models.TokenResult;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -66,6 +69,18 @@ public class UserService {
         rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
         rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
         rspInfo.setUser(user);
+
+        return rspInfo;
+    }
+
+    public UserFindAllRspInfo findAll(UserFindAllActionInfo actionInfo) {
+        List<User> userList = userDao.findAll();
+
+        UserFindAllRspInfo rspInfo = new UserFindAllRspInfo();
+        rspInfo.setActionId(actionInfo.getActionId());
+        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
+        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.setUserList(userList);
 
         return rspInfo;
     }

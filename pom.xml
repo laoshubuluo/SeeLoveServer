@@ -225,7 +225,7 @@
 	</profiles>
 
 	<build>
-		<finalName>see-love</finalName>
+		<finalName>SeeLove</finalName>
 		<resources>
 			<resource>
 				<directory>${profiles.dir}/${package.environment}</directory>

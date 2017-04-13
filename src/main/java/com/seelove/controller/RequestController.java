@@ -5,10 +5,13 @@ import com.seelove.common.Constant;
 import com.seelove.common.RequestCode;
 import com.seelove.entity.enums.ResponseType;
 import com.seelove.entity.network.request.UserCreateActionInfo;
+import com.seelove.entity.network.request.UserFindAllActionInfo;
 import com.seelove.entity.network.request.UserLoginActionInfo;
+import com.seelove.entity.network.request.VideoFindByUserActionInfo;
 import com.seelove.entity.network.request.base.RequestInfo;
 import com.seelove.entity.network.response.base.ResponseInfo;
 import com.seelove.service.UserService;
+import com.seelove.service.VideoService;
 import com.seelove.utils.GsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,8 @@ public class RequestController {
     private static Logger logger = LoggerFactory.getLogger(RequestController.class);
     @Resource
     private UserService userService;
+    @Resource
+    private VideoService videoService;
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -54,13 +59,25 @@ public class RequestController {
         JSONObject jsonObject = JSONObject.parseObject(json);
         String actionInfoStr = jsonObject.getString("actionInfo");
         switch (requestInfo.getActionInfo().getActionId()) {
+            // 用户创建
             case RequestCode.USER_CREATE:
                 UserCreateActionInfo userCreateActionInfo = GsonUtil.fromJson(actionInfoStr, UserCreateActionInfo.class);
                 response = userService.create(userCreateActionInfo);
                 break;
+            // 用户登录
             case RequestCode.USER_LOGIN:
                 UserLoginActionInfo userLoginActionInfo = GsonUtil.fromJson(actionInfoStr, UserLoginActionInfo.class);
                 response = userService.login(userLoginActionInfo);
+                break;
+            // 获取所有用户
+            case RequestCode.USER_FIND_ALL:
+                UserFindAllActionInfo userFindAllActionInfo = GsonUtil.fromJson(actionInfoStr, UserFindAllActionInfo.class);
+                response = userService.findAll(userFindAllActionInfo);
+                break;
+            // 获取用户视频
+            case RequestCode.VIDEO_FIND_BY_USER:
+                VideoFindByUserActionInfo videoFindByUserActionInfo = GsonUtil.fromJson(actionInfoStr, VideoFindByUserActionInfo.class);
+                response = videoService.findByUser(videoFindByUserActionInfo);
                 break;
             default:
                 break;

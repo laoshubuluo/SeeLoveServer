@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.seelove.common.Constant;
 import com.seelove.common.RequestCode;
 import com.seelove.entity.enums.ResponseType;
-import com.seelove.entity.network.request.UserCreateActionInfo;
-import com.seelove.entity.network.request.UserFindAllActionInfo;
-import com.seelove.entity.network.request.UserLoginActionInfo;
-import com.seelove.entity.network.request.VideoFindByUserActionInfo;
+import com.seelove.entity.network.request.*;
 import com.seelove.entity.network.request.base.RequestInfo;
 import com.seelove.entity.network.response.base.ResponseInfo;
+import com.seelove.service.FollowService;
 import com.seelove.service.UserService;
 import com.seelove.service.VideoService;
 import com.seelove.utils.GsonUtil;
@@ -37,6 +35,8 @@ public class RequestController {
     private UserService userService;
     @Resource
     private VideoService videoService;
+    @Resource
+    private FollowService followService;
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -47,12 +47,7 @@ public class RequestController {
         ResponseInfo response = null;
         // 请求解析异常
         if (null == requestInfo || null == requestInfo.getActionInfo()) {
-            response = new ResponseInfo();
-            response.setActionId(0);
-            response.setStatusCode(ResponseType.PARAM_ERROR.getCode());
-            response.setStatusMsg(ResponseType.PARAM_ERROR.getMessage());
-
-            logger.info(Constant.LOG_RESPONSE + ResponseType.PARAM_ERROR.getMessage() + ": " + json);
+            response = responseError(0, json);
             return GsonUtil.toJson(response);
         }
         // 请求解析正常
@@ -64,6 +59,11 @@ public class RequestController {
                 UserCreateActionInfo userCreateActionInfo = GsonUtil.fromJson(actionInfoStr, UserCreateActionInfo.class);
                 response = userService.create(userCreateActionInfo);
                 break;
+            // 用户更新
+            case RequestCode.USER_UPDATE:
+                UserUpdateActionInfo userUpdateActionInfo = GsonUtil.fromJson(actionInfoStr, UserUpdateActionInfo.class);
+                response = userService.update(userUpdateActionInfo);
+                break;
             // 用户登录
             case RequestCode.USER_LOGIN:
                 UserLoginActionInfo userLoginActionInfo = GsonUtil.fromJson(actionInfoStr, UserLoginActionInfo.class);
@@ -74,16 +74,47 @@ public class RequestController {
                 UserFindAllActionInfo userFindAllActionInfo = GsonUtil.fromJson(actionInfoStr, UserFindAllActionInfo.class);
                 response = userService.findAll(userFindAllActionInfo);
                 break;
-            // 获取用户视频
-            case RequestCode.VIDEO_FIND_BY_USER:
-                VideoFindByUserActionInfo videoFindByUserActionInfo = GsonUtil.fromJson(actionInfoStr, VideoFindByUserActionInfo.class);
-                response = videoService.findByUser(videoFindByUserActionInfo);
+            // 获取用户详情
+            case RequestCode.USER_FIND_DETAIL:
+                UserFindDetailActionInfo userFindDetailActionInfo = GsonUtil.fromJson(actionInfoStr, UserFindDetailActionInfo.class);
+                response = userService.findDetail(userFindDetailActionInfo);
+                break;
+            // 创建视频
+            case RequestCode.VIDEO_CREATE:
+                VideoCreateActionInfo videoCreateActionInfo = GsonUtil.fromJson(actionInfoStr, VideoCreateActionInfo.class);
+                response = videoService.create(videoCreateActionInfo);
+                break;
+            // 关注、取消关注
+            case RequestCode.FOLLOW:
+                FollowActionInfo followActionInfo = GsonUtil.fromJson(actionInfoStr, FollowActionInfo.class);
+                response = followService.follow(followActionInfo);
+                break;
+            // 获取user主动关注的人
+            case RequestCode.FOLLOW_FIND_BY_USER:
+                FollowFindAllActionInfo followFindAllByUserActionInfo = GsonUtil.fromJson(actionInfoStr, FollowFindAllActionInfo.class);
+                response = followService.findAllByUserId(followFindAllByUserActionInfo);
+                break;
+            // 获取关注user的人
+            case RequestCode.FOLLOW_FIND_BY_FOLLOWED_USER:
+                FollowFindAllActionInfo followFindAllByFollowedUserActionInfo = GsonUtil.fromJson(actionInfoStr, FollowFindAllActionInfo.class);
+                response = followService.findAllByFollowedUserId(followFindAllByFollowedUserActionInfo);
                 break;
             default:
+                response = responseError(requestInfo.getActionInfo().getActionId(), json);
                 break;
         }
         logger.info(Constant.LOG_RESPONSE + ResponseType.SUCCESS.getMessage() + ": " + response.toString());
         return GsonUtil.toJson(response);
+    }
+
+    private ResponseInfo responseError(int actionId, String json) {
+        ResponseInfo response = new ResponseInfo();
+        response.setActionId(actionId);
+        response.setStatusCode(ResponseType.PARAM_ERROR.getCode());
+        response.setStatusMsg(ResponseType.PARAM_ERROR.getMessage());
+
+        logger.info(Constant.LOG_RESPONSE + ResponseType.PARAM_ERROR.getMessage() + ": " + json);
+        return response;
     }
 }
 

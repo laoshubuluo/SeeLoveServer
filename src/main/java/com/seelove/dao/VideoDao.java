@@ -15,9 +15,15 @@ import java.util.List;
  */
 @Repository
 public interface VideoDao {
-    @Select("select * from videoinfo where userId=#{userId}")
+    @Select("select v.* from videoinfo v, user_video uv where uv.userId=#{userId} and uv.videoId = v.videoId")
     List<Video> findByUser(@Param("userId") Long userId);
 
-    @Insert("insert into videoinfo (videoId,userId,videoTitle,videoTime,isDefault,videoImg,videoUrl,videoPlayTime,remark) values (#{videoId},#{userId},#{videoTitle},#{videoTime},#{isDefault},#{videoImg},#{videoUrl},#{videoPlayTime},#{remark})")
-    void create(@Param("videoId") Long videoId, @Param("userId") Long userId, @Param("videoTitle") String videoTitle, @Param("videoTime") String videoTime, @Param("isDefault") String isDefault, @Param("videoImg") String videoImg, @Param("videoUrl") String videoUrl, @Param("videoPlayTime") String videoPlayTime, @Param("remark") String remark);
+    @Select("select v.* from videoinfo v, user_video uv where uv.userId=#{userId} and uv.isDefault = 1 and uv.videoId = v.videoId")
+    Video findDefault(@Param("userId") Long userId);
+
+    @Insert("insert into videoinfo (videoId,videoTitle,videoTime,videoImg,videoUrl,videoPlayTime,remark) values (#{videoId},#{videoTitle},#{videoTime},#{videoImg},#{videoUrl},#{videoPlayTime},#{remark})")
+    void create(@Param("videoId") Long videoId, @Param("videoTitle") String videoTitle, @Param("videoTime") String videoTime, @Param("videoImg") String videoImg, @Param("videoUrl") String videoUrl, @Param("videoPlayTime") String videoPlayTime, @Param("remark") String remark);
+
+    @Insert("insert into user_video (videoId,userId,isDefault) values (#{videoId},#{userId},#{isDefault})")
+    void createUserVideo(@Param("videoId") Long videoId, @Param("userId") Long userId, @Param("isDefault") String isDefault);
 }

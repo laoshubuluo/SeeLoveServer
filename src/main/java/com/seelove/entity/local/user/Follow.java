@@ -3,11 +3,12 @@ package com.seelove.entity.local.user;
 import java.io.Serializable;
 
 /**
- * 用户实体类
+ * 关注实体类
+ *
  * @author L.jinzhu
  * @date 2017-03-31 18:07
  */
-public class Follow implements Serializable{
+public class Follow implements Serializable {
     private long userId; // 用户id,唯一标示
     private long followUserId; // 关注的用户id,唯一标示
 

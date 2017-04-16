@@ -2,10 +2,7 @@ package com.seelove.dao;
 
 import com.seelove.entity.local.user.User;
 import com.seelove.provider.SqlProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +22,7 @@ public interface UserDao {
 
     @Insert("insert into userinfo (userId,nickName,token4RongCloud,headUrl) values (#{userId},#{nickName},#{token4RongCloud},#{headUrl})")
     void create(@Param("userId") Long userId, @Param("nickName") String nickName, @Param("token4RongCloud") String token4RongCloud, @Param("headUrl") String headUrl);
+
+    @Update("update userinfo set userId = #{userId}, nickName = #{nickName}, token4RongCloud = #{token4RongCloud}, headUrl = #{headUrl} where userId=#{userId}")
+    void update(@Param("userId") Long userId, @Param("nickName") String nickName, @Param("token4RongCloud") String token4RongCloud, @Param("headUrl") String headUrl);
 }

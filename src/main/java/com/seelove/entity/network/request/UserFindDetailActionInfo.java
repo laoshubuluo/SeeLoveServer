@@ -8,10 +8,12 @@ import com.seelove.entity.network.request.base.ActionInfo;
  * date : 2015/8/12
  * introduce : 请求实体
  */
-public class VideoFindByUserActionInfo extends ActionInfo {
+public class UserFindDetailActionInfo extends ActionInfo {
     private long userId;
-    public VideoFindByUserActionInfo(int actionId) {
+
+    public UserFindDetailActionInfo(int actionId, long userId) {
         super(actionId);
+        this.userId = userId;
     }
 
     public long getUserId() {

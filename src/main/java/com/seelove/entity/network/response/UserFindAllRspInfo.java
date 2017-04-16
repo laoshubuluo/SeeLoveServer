@@ -1,8 +1,6 @@
 package com.seelove.entity.network.response;
 
-
-import com.seelove.entity.local.user.User;
-import com.seelove.entity.local.video.Video;
+import com.seelove.entity.local.user.UserDetail;
 import com.seelove.entity.network.response.base.ResponseInfo;
 
 import java.util.List;
@@ -13,13 +11,13 @@ import java.util.List;
  * introduce : 响应实体
  */
 public class UserFindAllRspInfo extends ResponseInfo {
-    private List<User> userList;
+    private List<UserDetail> userDetailList;
 
-    public List<User> getUserList() {
-        return userList;
+    public List<UserDetail> getUserDetailList() {
+        return userDetailList;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUserDetailList(List<UserDetail> userDetailList) {
+        this.userDetailList = userDetailList;
     }
 }

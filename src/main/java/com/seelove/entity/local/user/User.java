@@ -4,27 +4,28 @@ import java.io.Serializable;
 
 /**
  * 用户实体类
- * @author shisheng.zhao
+ *
+ * @author L.jinzhu
  * @date 2017-03-31 18:07
  */
-public class User implements Serializable{
+public class User implements Serializable {
     // 用户基本信息
     private long userId; // 用户id,唯一标示
     private String headUrl; // 用户头像
     private String nickName; // 用户昵称
     private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
-    private String sex ;//性别 0:未知;1男;2女
+    private String sex;//性别 0:未知;1男;2女
     private String bigImg; // 用户信息默认大图
-    private int cityCode; // 城市编号
+    private String cityCode; // 城市编号
     private String cityName; // 城市名称
-    private int workCode; // 职业编号
+    private String workCode; // 职业编号
     private String workName; // 职业名称
-    private int educationCode; // 学历编号
+    private String educationCode; // 学历编号
     private String educationName; // 学历名称
-    private int houseCode; // 住房状况编号
+    private String houseCode; // 住房状况编号
     private String houseName; // 住房状况名称
-    private int marriageCode; // 婚姻状况编号
+    private String marriageCode; // 婚姻状况编号
     private String marriageName; // 婚姻状况名称
     private String introduce; // 一句话介绍
     private String remark; // 保留域
@@ -36,14 +37,6 @@ public class User implements Serializable{
     private int videoCount; // 视频数
     private int followCount; // 关注数
     private int followedCount; // 被关注数
-
-    public int getFollowedCount() {
-        return followedCount;
-    }
-
-    public void setFollowedCount(int followedCount) {
-        this.followedCount = followedCount;
-    }
 
     public long getUserId() {
         return userId;
@@ -101,11 +94,11 @@ public class User implements Serializable{
         this.bigImg = bigImg;
     }
 
-    public int getCityCode() {
+    public String getCityCode() {
         return cityCode;
     }
 
-    public void setCityCode(int cityCode) {
+    public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
     }
 
@@ -117,11 +110,11 @@ public class User implements Serializable{
         this.cityName = cityName;
     }
 
-    public int getWorkCode() {
+    public String getWorkCode() {
         return workCode;
     }
 
-    public void setWorkCode(int workCode) {
+    public void setWorkCode(String workCode) {
         this.workCode = workCode;
     }
 
@@ -133,11 +126,11 @@ public class User implements Serializable{
         this.workName = workName;
     }
 
-    public int getEducationCode() {
+    public String getEducationCode() {
         return educationCode;
     }
 
-    public void setEducationCode(int educationCode) {
+    public void setEducationCode(String educationCode) {
         this.educationCode = educationCode;
     }
 
@@ -149,11 +142,11 @@ public class User implements Serializable{
         this.educationName = educationName;
     }
 
-    public int getHouseCode() {
+    public String getHouseCode() {
         return houseCode;
     }
 
-    public void setHouseCode(int houseCode) {
+    public void setHouseCode(String houseCode) {
         this.houseCode = houseCode;
     }
 
@@ -165,11 +158,11 @@ public class User implements Serializable{
         this.houseName = houseName;
     }
 
-    public int getMarriageCode() {
+    public String getMarriageCode() {
         return marriageCode;
     }
 
-    public void setMarriageCode(int marriageCode) {
+    public void setMarriageCode(String marriageCode) {
         this.marriageCode = marriageCode;
     }
 
@@ -197,6 +190,14 @@ public class User implements Serializable{
         this.remark = remark;
     }
 
+    public String getToken4RongCloud() {
+        return token4RongCloud;
+    }
+
+    public void setToken4RongCloud(String token4RongCloud) {
+        this.token4RongCloud = token4RongCloud;
+    }
+
     public int getVideoCount() {
         return videoCount;
     }
@@ -213,12 +214,12 @@ public class User implements Serializable{
         this.followCount = followCount;
     }
 
-    public String getToken4RongCloud() {
-        return token4RongCloud;
+    public int getFollowedCount() {
+        return followedCount;
     }
 
-    public void setToken4RongCloud(String token4RongCloud) {
-        this.token4RongCloud = token4RongCloud;
+    public void setFollowedCount(int followedCount) {
+        this.followedCount = followedCount;
     }
 
     @Override

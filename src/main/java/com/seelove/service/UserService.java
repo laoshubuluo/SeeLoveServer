@@ -74,7 +74,7 @@ public class UserService {
     }
 
     public UserFindAllRspInfo findAll(UserFindAllActionInfo actionInfo) {
-        List<User> userList = userDao.findAll();
+        List<User> userList = userDao.findAll(actionInfo.getAgeStart(), actionInfo.getAgeEnd(), actionInfo.getSex(), actionInfo.getCityCode());
 
         UserFindAllRspInfo rspInfo = new UserFindAllRspInfo();
         rspInfo.setActionId(actionInfo.getActionId());

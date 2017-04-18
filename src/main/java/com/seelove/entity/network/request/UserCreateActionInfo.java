@@ -12,8 +12,10 @@ public class UserCreateActionInfo extends ActionInfo {
     private String userName;
     private String dataFromOtherPlatform;// 第三方平台返回的用户信息体
 
-    public UserCreateActionInfo(int actionId) {
+    public UserCreateActionInfo(int actionId, String userName, String dataFromOtherPlatform) {
         super(actionId);
+        this.userName = userName;
+        this.dataFromOtherPlatform = dataFromOtherPlatform;
     }
 
     public String getUserName() {

@@ -28,29 +28,20 @@ public class VideoService {
     }
 
     public VideoCreateRspInfo create(VideoCreateActionInfo actionInfo) {
+        VideoCreateRspInfo rspInfo = new VideoCreateRspInfo();
         Video video = actionInfo.getVideo();
         if (null == video) {
-            VideoCreateRspInfo rspInfo = new VideoCreateRspInfo();
-            rspInfo.setActionId(actionInfo.getActionId());
-            rspInfo.setStatusCode(ResponseType.PARAM_ERROR.getCode());
-            rspInfo.setStatusMsg(ResponseType.PARAM_ERROR.getMessage());
+            rspInfo.initError4Param(actionInfo.getActionId());
             return rspInfo;
         }
 
-        // TODO by L.jinzhu for id应该通过表索引反馈
-        int id = new Random().nextInt(10000);
-        video.setVideoId(id);
-
         // 保存video
-        videoDao.create(video.getVideoId(), video.getVideoTitle(), video.getVideoTime(), video.getVideoImg(), video.getVideoUrl(), video.getVideoPlayTime(), video.getRemark());
+        videoDao.create(video);
         // 保存user_video
         videoDao.createUserVideo(video.getVideoId(), video.getUserId(), video.getIsDefault());
 
-        VideoCreateRspInfo rspInfo = new VideoCreateRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
-
+        rspInfo.initSuccess(actionInfo.getActionId());
+        rspInfo.setVideo(video);
         return rspInfo;
     }
 }

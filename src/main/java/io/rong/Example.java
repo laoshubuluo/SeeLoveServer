@@ -83,7 +83,6 @@ public class Example {
             CodeSuccessResult messagePublishTemplateResult = rongCloud.message.publishTemplate(publishTemplateTemplateMessage);
             System.out.println("publishTemplate:  " + messagePublishTemplateResult.toString());
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         } finally {
             if (null != reader) {
@@ -104,7 +103,6 @@ public class Example {
             CodeSuccessResult messagePublishSystemTemplateResult = rongCloud.message.publishSystemTemplate(publishSystemTemplateTemplateMessage);
             System.out.println("publishSystemTemplate:  " + messagePublishSystemTemplateResult.toString());
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         } finally {
             if (null != reader) {
@@ -280,7 +278,6 @@ public class Example {
             CodeSuccessResult pushSetUserPushTagResult = rongCloud.push.setUserPushTag(setUserPushTagUserTag);
             System.out.println("setUserPushTag:  " + pushSetUserPushTagResult.toString());
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         } finally {
             if (null != reader) {
@@ -295,7 +292,6 @@ public class Example {
             CodeSuccessResult pushBroadcastPushResult = rongCloud.push.broadcastPush(broadcastPushPushMessage);
             System.out.println("broadcastPush:  " + pushBroadcastPushResult.toString());
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         } finally {
             if (null != reader) {

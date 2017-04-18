@@ -40,14 +40,16 @@ public class RequestController {
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public String test(@RequestBody(required = false) String json) {
+    public String run(@RequestBody(required = false) String json) {
         logger.info(Constant.LOG_REQUEST + json);
 
         RequestInfo requestInfo = GsonUtil.fromJson(json, RequestInfo.class);
         ResponseInfo response = null;
         // 请求解析异常
         if (null == requestInfo || null == requestInfo.getActionInfo()) {
-            response = responseError(0, json);
+            response = new ResponseInfo();
+            response.initError4Param(0);
+            logger.info(Constant.LOG_RESPONSE + ": " + response.toString());
             return GsonUtil.toJson(response);
         }
         // 请求解析正常
@@ -100,21 +102,12 @@ public class RequestController {
                 response = followService.findAllByFollowedUserId(followFindAllByFollowedUserActionInfo);
                 break;
             default:
-                response = responseError(requestInfo.getActionInfo().getActionId(), json);
+                response = new ResponseInfo();
+                response.initError4Param(requestInfo.getActionInfo().getActionId());
                 break;
         }
-        logger.info(Constant.LOG_RESPONSE + ResponseType.SUCCESS.getMessage() + ": " + response.toString());
+        logger.info(Constant.LOG_RESPONSE + ": " + response.toString());
         return GsonUtil.toJson(response);
-    }
-
-    private ResponseInfo responseError(int actionId, String json) {
-        ResponseInfo response = new ResponseInfo();
-        response.setActionId(actionId);
-        response.setStatusCode(ResponseType.PARAM_ERROR.getCode());
-        response.setStatusMsg(ResponseType.PARAM_ERROR.getMessage());
-
-        logger.info(Constant.LOG_RESPONSE + ResponseType.PARAM_ERROR.getMessage() + ": " + json);
-        return response;
     }
 }
 

@@ -5,8 +5,9 @@ package com.seelove.entity.enums;
  */
 public enum ResponseType {
     SUCCESS(100, "success"),
-    PARAM_ERROR(-2, "request data error"),
-    ERROR(-1, "system error");
+    ERROR(-1, "服务器错误，请稍后重试"),
+    ERROR_4_PARAM(-2, "请求参数有误"),
+    ERROR_4_OTHER_PLATFORM(-3, "第三方平台异常，请稍后重试");
 
     private int code;
     private String message;

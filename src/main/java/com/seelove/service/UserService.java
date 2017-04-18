@@ -10,6 +10,7 @@ import com.seelove.entity.local.video.Video;
 import com.seelove.entity.network.request.*;
 import com.seelove.entity.network.response.*;
 import com.seelove.manager.RongCloudManager;
+import com.seelove.utils.StringUtil;
 import io.rong.models.TokenResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,46 +34,47 @@ public class UserService {
     private UserDao userDao;
     @Resource
     private VideoDao videoDao;
-    private Random random;
 
     public UserService() {
-        random = new Random();
     }
 
     public UserCreateRspInfo create(UserCreateActionInfo actionInfo) {
-        // TODO by L.jinzhu for id应该通过表索引反馈
-        int id = random.nextInt(10000);
+        UserCreateRspInfo rspInfo = new UserCreateRspInfo();
+        if (StringUtil.isNullOrBlank(actionInfo.getDataFromOtherPlatform())) {
+            rspInfo.initError4Param(actionInfo.getActionId());
+            return rspInfo;
+        }
+
         User user = new User();
-        user.setUserId(id);
-        user.setNickName(actionInfo.getUserName() + id);
+        user.setNickName(actionInfo.getUserName());
         user.setHeadUrl("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4023417989,1385713059&fm=117&gp=0.jpg");
-        // 获取融云token
+        userDao.create(user);
+
+        // 获取融云token并更新数据库
         TokenResult tokenResult = RongCloudManager.getInstance().getToken(String.valueOf(user.getUserId()), user.getNickName(), user.getHeadUrl());
         if (null != tokenResult && RequestCode.TOKEN_SUCCESS == tokenResult.getCode()) {
             user.setToken4RongCloud(tokenResult.getToken());
+            userDao.updateToken(user);
         } else {
-            // TODO by L.jinzhu for 获取token失败
+            rspInfo.initError4OtherPlatform(actionInfo.getActionId());
         }
-        userDao.create(Long.parseLong(String.valueOf(id)), user.getNickName(), user.getToken4RongCloud(), user.getHeadUrl());
 
-        UserCreateRspInfo rspInfo = new UserCreateRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUser(user);
-
         return rspInfo;
     }
 
     public UserUpdateRspInfo update(UserUpdateActionInfo actionInfo) {
-        User user = actionInfo.getUser();
-        userDao.update(user.getUserId(), user.getNickName(), user.getToken4RongCloud(), user.getHeadUrl());
-
         UserUpdateRspInfo rspInfo = new UserUpdateRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        User user = actionInfo.getUser();
+        if (null == user) {
+            rspInfo.initError4Param(actionInfo.getActionId());
+            return rspInfo;
+        }
 
+        userDao.update(actionInfo.getUser());
+
+        rspInfo.initSuccess(actionInfo.getActionId());
         return rspInfo;
     }
 
@@ -81,11 +83,8 @@ public class UserService {
         User user = userDao.findById(actionInfo.getUserId());
 
         UserLoginRspInfo rspInfo = new UserLoginRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUser(user);
-
         return rspInfo;
     }
 
@@ -105,11 +104,8 @@ public class UserService {
         }
 
         UserFindAllRspInfo rspInfo = new UserFindAllRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserDetailList(userDetailList);
-
         return rspInfo;
     }
 
@@ -123,11 +119,8 @@ public class UserService {
         userDetail.setVideoList(videoList);
 
         UserFindDetailRspInfo rspInfo = new UserFindDetailRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserDetail(userDetail);
-
         return rspInfo;
     }
 }

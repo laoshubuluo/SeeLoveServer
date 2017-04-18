@@ -20,9 +20,23 @@ public interface UserDao {
     @SelectProvider(type = SqlProvider.class, method = "userFindAll")
     List<User> findAll(@Param("ageStart") int ageStart, @Param("ageEnd") int ageEnd, @Param("sex") String sex, @Param("cityCode") String cityCode);
 
-    @Insert("insert into userinfo (userId,nickName,token4RongCloud,headUrl) values (#{userId},#{nickName},#{token4RongCloud},#{headUrl})")
-    void create(@Param("userId") Long userId, @Param("nickName") String nickName, @Param("token4RongCloud") String token4RongCloud, @Param("headUrl") String headUrl);
+    @Insert("insert into userinfo (" +
+            "headUrl,nickName,accountType,age,sex,bigImg,cityCode,cityName,workCode,workName,educationCode,educationName,houseCode,houseName,marriageCode,marriageName,introduce,remark,token4RongCloud" +
+            ") values (" +
+            "#{user.headUrl},#{user.nickName},#{user.accountType},#{user.age},#{user.sex},#{user.bigImg},#{user.cityCode},#{user.cityName},#{user.workCode},#{user.workName},#{user.educationCode},#{user.educationName},#{user.houseCode},#{user.houseName},#{user.marriageCode},#{user.marriageName},#{user.introduce},#{user.remark},#{user.token4RongCloud}" +
+            ")")
+    @Options(useGeneratedKeys = true, keyProperty = "user.userId")
+    void create(@Param("user") User user);
 
-    @Update("update userinfo set userId = #{userId}, nickName = #{nickName}, token4RongCloud = #{token4RongCloud}, headUrl = #{headUrl} where userId=#{userId}")
-    void update(@Param("userId") Long userId, @Param("nickName") String nickName, @Param("token4RongCloud") String token4RongCloud, @Param("headUrl") String headUrl);
+    @Update("update userinfo set " +
+            "headUrl=#{user.headUrl},nickName=#{user.nickName},accountType=#{user.accountType},age=#{user.age},sex=#{user.sex},bigImg=#{user.bigImg},cityCode=#{user.cityCode}," +
+            "cityName=#{user.cityName},workCode=#{user.workCode},workName=#{user.workName},educationCode=#{user.educationCode},educationName=#{user.educationName},houseCode=#{user.houseCode}," +
+            "houseName=#{user.houseName},marriageCode=#{user.marriageCode},marriageName=#{user.marriageName},introduce=#{user.introduce},remark=#{user.remark},token4RongCloud=#{user.token4RongCloud}" +
+            " where userId=#{user.userId}")
+    void update(@Param("user") User user);
+
+    @Update("update userinfo set " +
+            "token4RongCloud=#{user.token4RongCloud}" +
+            " where userId=#{user.userId}")
+    void updateToken(@Param("user") User user);
 }

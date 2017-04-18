@@ -52,6 +52,23 @@ public class UnitTestController {
     }
 
     @org.junit.Test
+    public void userCreateTest() throws Exception {
+        UserCreateActionInfo actionInfo = new UserCreateActionInfo(RequestCode.USER_CREATE, "sdddddddd", "sssss");
+        requestInfo.setActionInfo(actionInfo);
+        String postJson = GsonUtil.toJson(requestInfo);
+        System.out.println("=============== 参数准备完成 =============================================");
+        System.out.println("====" + postJson);
+
+        ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post(requestUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(postJson));
+        MvcResult mvcResult = resultActions.andReturn();
+        String result = mvcResult.getResponse().getContentAsString();
+        System.out.println("=============== 请求获得响应 =============================================");
+        System.out.println("====" + result);
+    }
+
+    @org.junit.Test
     public void userFindAllTest() throws Exception {
 //        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, 1, 33, "", "");
 //        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, 1, 33, "1", "");
@@ -75,7 +92,28 @@ public class UnitTestController {
     public void userUpdateTest() throws Exception {
         User user = new User();
         user.setUserId(1);
-        user.setNickName("更新操作修改的用户信息");
+        user.setNickName("啥的");
+        user.setHeadUrl("啥的");
+        user.setToken4RongCloud("啥的");
+        user.setWorkName("啥的");
+        user.setAccountType(1);
+        user.setAge(22);
+        user.setBigImg("啥的");
+        user.setCityCode("啥的");
+        user.setCityName("啥的");
+        user.setEducationCode("啥的");
+        user.setEducationName("啥的");
+        user.setFollowCount(11);
+        user.setFollowedCount(121);
+        user.setHouseCode("啥的");
+        user.setHouseName("啥的");
+        user.setIntroduce("啥的");
+        user.setMarriageCode("啥的");
+        user.setMarriageName("啥的");
+        user.setRemark("啥的");
+        user.setSex("啥的");
+        user.setVideoCount(1212);
+
         UserUpdateActionInfo actionInfo = new UserUpdateActionInfo(RequestCode.USER_UPDATE, user);
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);

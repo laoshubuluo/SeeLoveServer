@@ -41,9 +41,7 @@ public class FollowService {
         Follow follow = actionInfo.getFollow();
         if (null == follow) {
             FollowRspInfo rspInfo = new FollowRspInfo();
-            rspInfo.setActionId(actionInfo.getActionId());
-            rspInfo.setStatusCode(ResponseType.PARAM_ERROR.getCode());
-            rspInfo.setStatusMsg(ResponseType.PARAM_ERROR.getMessage());
+            rspInfo.initError4Param(actionInfo.getActionId());
             return rspInfo;
         }
         switch (type) {
@@ -57,15 +55,11 @@ public class FollowService {
                 break;
             default:
                 FollowRspInfo rspInfo = new FollowRspInfo();
-                rspInfo.setActionId(actionInfo.getActionId());
-                rspInfo.setStatusCode(ResponseType.PARAM_ERROR.getCode());
-                rspInfo.setStatusMsg(ResponseType.PARAM_ERROR.getMessage());
+                rspInfo.initError4Param(actionInfo.getActionId());
                 return rspInfo;
         }
         FollowRspInfo rspInfo = new FollowRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.initSuccess(actionInfo.getActionId());
 
         return rspInfo;
     }
@@ -80,9 +74,7 @@ public class FollowService {
         List<User> userList = followDao.findByUserId(actionInfo.getUserId());
 
         FollowFindAllRspInfo rspInfo = new FollowFindAllRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserList(userList);
 
         return rspInfo;
@@ -98,9 +90,7 @@ public class FollowService {
         List<User> userList = followDao.findByFollowedUserId(actionInfo.getUserId());
 
         FollowFindAllRspInfo rspInfo = new FollowFindAllRspInfo();
-        rspInfo.setActionId(actionInfo.getActionId());
-        rspInfo.setStatusCode(ResponseType.SUCCESS.getCode());
-        rspInfo.setStatusMsg(ResponseType.SUCCESS.getMessage());
+        rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserList(userList);
 
         return rspInfo;

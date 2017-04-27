@@ -1,7 +1,9 @@
 package com.seelove.provider;
 
+import com.seelove.entity.local.user.User;
 import com.seelove.utils.StringUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +35,31 @@ public class SqlProvider {
             String cityCode = (String) para.get("cityCode");
             if (StringUtil.isNotBlank(cityCode)) {
                 sql.append(" and cityCode = " + cityCode);
+            }
+        }
+        return sql.toString();
+    }
+
+    public String videoFindAllByUserList(Map<String, Object> para) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select v.* from videoinfo v, user_video uv where 1=1");
+
+        // 拼接用户列表
+        if (null != para.get("userList") && null != para.get("userList")) {
+            List<User> userList = (List<User>) para.get("userList");
+            // 存在关注的好友及对应视频
+            if (null != userList && 0 != userList.size()) {
+                String str = "(";
+                for (User user : userList) {
+                    str += user.getUserId() + ",";
+                }
+                str = str.substring(0, str.lastIndexOf(","));
+                str += ")";
+                sql.append(" and uv.videoId = v.videoId and uv.userId in " + str + " order by v.videoId");
+            }
+            // 不存在关注的好友
+            else {
+                sql.append(" and 1=2");
             }
         }
         return sql.toString();

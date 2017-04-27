@@ -1,10 +1,9 @@
 package com.seelove.dao;
 
+import com.seelove.entity.local.user.User;
 import com.seelove.entity.local.video.Video;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.seelove.provider.SqlProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,13 +18,19 @@ public interface VideoDao {
     @Select("select v.* from videoinfo v, user_video uv where uv.userId=#{userId} and uv.videoId = v.videoId")
     List<Video> findByUser(@Param("userId") Long userId);
 
+    @Select("select * from videoinfo order by videoId desc limit 0,5")
+    List<Video> findCount5();
+
     @Select("select v.* from videoinfo v, user_video uv where uv.userId=#{userId} and uv.isDefault = 1 and uv.videoId = v.videoId")
     Video findDefault(@Param("userId") Long userId);
 
+    @SelectProvider(type = SqlProvider.class, method = "videoFindAllByUserList")
+    List<Video> findAllByUserList(@Param("userList") List<User> userList);
+
     @Insert("insert into videoinfo (" +
-            "videoTitle,videoTime,videoImg,videoUrl,videoPlayTime,remark" +
+            "videoTitle,videoTime,videoImg,videoUrl,videoPlayTime,userId,remark" +
             ") values (" +
-            "#{video.videoTitle},#{video.videoTime},#{video.videoImg},#{video.videoUrl},#{video.videoPlayTime},#{video.remark}" +
+            "#{video.videoTitle},#{video.videoTime},#{video.videoImg},#{video.videoUrl},#{video.videoPlayTime},#{video.userId},#{video.remark}" +
             ")")
     @Options(useGeneratedKeys = true, keyProperty = "video.videoId")
     void create(@Param("video") Video video);

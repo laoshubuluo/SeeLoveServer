@@ -8,6 +8,7 @@ import com.seelove.entity.network.request.*;
 import com.seelove.entity.network.request.base.RequestInfo;
 import com.seelove.entity.network.response.base.ResponseInfo;
 import com.seelove.service.FollowService;
+import com.seelove.service.NewsService;
 import com.seelove.service.UserService;
 import com.seelove.service.VideoService;
 import com.seelove.utils.GsonUtil;
@@ -37,6 +38,8 @@ public class RequestController {
     private VideoService videoService;
     @Resource
     private FollowService followService;
+    @Resource
+    private NewsService newsService;
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -100,6 +103,11 @@ public class RequestController {
             case RequestCode.FOLLOW_FIND_BY_FOLLOWED_USER:
                 FollowFindAllActionInfo followFindAllByFollowedUserActionInfo = GsonUtil.fromJson(actionInfoStr, FollowFindAllActionInfo.class);
                 response = followService.findAllByFollowedUserId(followFindAllByFollowedUserActionInfo);
+                break;
+            // 获取动态
+            case RequestCode.NEWS_FIND_ALL:
+                NewsFindAllActionInfo newsFindAllActionInfo = GsonUtil.fromJson(actionInfoStr, NewsFindAllActionInfo.class);
+                response = newsService.findAll(newsFindAllActionInfo);
                 break;
             default:
                 response = new ResponseInfo();

@@ -149,7 +149,7 @@ public class UnitTestController {
     @org.junit.Test
     public void videoCreateTest() throws Exception {
         Video video = new Video();
-        video.setUserId(1);
+        video.setUserId(2);
         video.setIsDefault("1");
         video.setVideoTitle("单元测试title");
         video.setVideoImg("http://a.hiphotos.baidu.com/baike/whfpf%3D180%2C140%2C50/sign=20fced2fde2a283443f3654b3d88f8d2/4bed2e738bd4b31cc7a469898dd6277f9e2ff86c.jpg");
@@ -213,6 +213,23 @@ public class UnitTestController {
     @org.junit.Test
     public void followFindAllByFollowedUserTest() throws Exception {
         FollowFindAllActionInfo actionInfo = new FollowFindAllActionInfo(RequestCode.FOLLOW_FIND_BY_FOLLOWED_USER, 1);
+        requestInfo.setActionInfo(actionInfo);
+        String postJson = GsonUtil.toJson(requestInfo);
+        System.out.println("=============== 参数准备完成 =============================================");
+        System.out.println("====" + postJson);
+
+        ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post(requestUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(postJson));
+        MvcResult mvcResult = resultActions.andReturn();
+        String result = mvcResult.getResponse().getContentAsString();
+        System.out.println("=============== 请求获得响应 =============================================");
+        System.out.println("====" + result);
+    }
+
+    @org.junit.Test
+    public void newsFindAllTest() throws Exception {
+        NewsFindAllActionInfo actionInfo = new NewsFindAllActionInfo(RequestCode.NEWS_FIND_ALL, 1);
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");

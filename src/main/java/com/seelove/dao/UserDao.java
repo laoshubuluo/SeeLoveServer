@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface UserDao {
-    @Select("select * from userinfo where userId=#{userId}")
+    @Select("select * from userinfo where userId=#{userId} limit 0,1")
     User findById(@Param("userId") Long userId);
 
     @SelectProvider(type = SqlProvider.class, method = "userFindAll")

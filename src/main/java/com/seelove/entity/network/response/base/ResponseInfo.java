@@ -18,10 +18,10 @@ public class ResponseInfo extends AbstractResponseInfo {
         this.statusMsg = ResponseType.SUCCESS.getMessage();
     }
 
-    public void initError(int actionId) {
+    public void initError(int actionId, ResponseType responseType) {
         this.actionId = actionId;
-        this.statusCode = ResponseType.ERROR.getCode();
-        this.statusMsg = ResponseType.ERROR.getMessage();
+        this.statusCode = responseType.getCode();
+        this.statusMsg = responseType.getMessage();
     }
 
     public void initError4Param(int actionId) {

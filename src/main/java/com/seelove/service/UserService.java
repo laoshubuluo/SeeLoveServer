@@ -1,9 +1,11 @@
 package com.seelove.service;
 
 import com.seelove.common.RequestCode;
+import com.seelove.dao.SecurityCodeDao;
 import com.seelove.dao.UserDao;
 import com.seelove.dao.VideoDao;
 import com.seelove.entity.enums.ResponseType;
+import com.seelove.entity.local.system.SecurityCode;
 import com.seelove.entity.local.user.User;
 import com.seelove.entity.local.user.UserDetail;
 import com.seelove.entity.local.video.Video;
@@ -19,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * 用户服务
@@ -34,34 +35,84 @@ public class UserService {
     private UserDao userDao;
     @Resource
     private VideoDao videoDao;
+    @Resource
+    private SecurityCodeDao securityCodeDao;
 
     public UserService() {
     }
 
-    public UserCreateRspInfo create(UserCreateActionInfo actionInfo) {
-        UserCreateRspInfo rspInfo = new UserCreateRspInfo();
-        if (StringUtil.isNullOrBlank(actionInfo.getDataFromOtherPlatform())) {
+    public UserRegisterLoginRspInfo login(UserRegisterLoginActionInfo actionInfo) {
+        UserRegisterLoginRspInfo rspInfo = new UserRegisterLoginRspInfo();
+        if (0 == actionInfo.getAccountType()) {
             rspInfo.initError4Param(actionInfo.getActionId());
             return rspInfo;
         }
-
-        User user = new User();
-        user.setNickName(actionInfo.getUserName());
-        user.setHeadUrl("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4023417989,1385713059&fm=117&gp=0.jpg");
-        userDao.create(user);
-
-        // 获取融云token并更新数据库
-        TokenResult tokenResult = RongCloudManager.getInstance().getToken(String.valueOf(user.getUserId()), user.getNickName(), user.getHeadUrl());
-        if (null != tokenResult && RequestCode.TOKEN_SUCCESS == tokenResult.getCode()) {
-            user.setToken4RongCloud(tokenResult.getToken());
-            userDao.updateToken(user);
-        } else {
-            rspInfo.initError4OtherPlatform(actionInfo.getActionId());
+        // 查询是否已经存在用户
+        User user = null;
+        switch (actionInfo.getAccountType()) {
+            case User.ACCOUNT_TYPE_PHONE:
+                // 验证码校验失败
+                SecurityCode securityCode = securityCodeDao.find(actionInfo.getPhoneNumber(), "1", actionInfo.getCode());
+                if (null == securityCode) {
+                    rspInfo.initError(actionInfo.getActionId(), ResponseType.ERROR_4_SECRITY_CODE_ERROR);
+                    rspInfo.setUser(user);
+                    return rspInfo;
+                }
+                // 验证码校验成功
+                user = userDao.findByAccount(User.ACCOUNT_TYPE_PHONE, actionInfo.getPhoneNumber());
+                break;
+            case User.ACCOUNT_TYPE_WECHAT:
+                user = userDao.findByAccount(User.ACCOUNT_TYPE_WECHAT, actionInfo.getDataFromOtherPlatform());
+                break;
+            case User.ACCOUNT_TYPE_QQ:
+                user = userDao.findByAccount(User.ACCOUNT_TYPE_QQ, actionInfo.getDataFromOtherPlatform());
+                break;
         }
 
-        rspInfo.initSuccess(actionInfo.getActionId());
-        rspInfo.setUser(user);
-        return rspInfo;
+        // 存在用户，登录
+        if (null != user) {
+            rspInfo.initSuccess(actionInfo.getActionId());
+            rspInfo.setUser(user);
+            return rspInfo;
+        }
+        // 不存在用户，注册
+        else {
+            user = new User();
+            user.setHeadUrl("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4023417989,1385713059&fm=117&gp=0.jpg");
+            switch (actionInfo.getAccountType()) {
+                case User.ACCOUNT_TYPE_PHONE:
+                    user.setAccountType(User.ACCOUNT_TYPE_PHONE);
+                    user.setAccount(actionInfo.getPhoneNumber());
+                    user.setNickName(actionInfo.getPhoneNumber());
+                    break;
+                case User.ACCOUNT_TYPE_WECHAT:
+                    //  TODO by L.jinzhu  for 带解析
+                    user.setAccountType(User.ACCOUNT_TYPE_WECHAT);
+                    user.setAccount(actionInfo.getDataFromOtherPlatform());
+                    user.setNickName(actionInfo.getDataFromOtherPlatform());
+                    break;
+                case User.ACCOUNT_TYPE_QQ:
+                    //  TODO by L.jinzhu  for 带解析
+                    user.setAccountType(User.ACCOUNT_TYPE_QQ);
+                    user.setAccount(actionInfo.getDataFromOtherPlatform());
+                    user.setNickName(actionInfo.getDataFromOtherPlatform());
+                    break;
+            }
+            userDao.create(user);
+
+            // 获取融云token并更新数据库
+            TokenResult tokenResult = RongCloudManager.getInstance().getToken(String.valueOf(user.getUserId()), user.getNickName(), user.getHeadUrl());
+            if (null != tokenResult && RequestCode.TOKEN_SUCCESS == tokenResult.getCode()) {
+                user.setToken4RongCloud(tokenResult.getToken());
+                userDao.updateToken(user);
+            } else {
+                rspInfo.initError4OtherPlatform(actionInfo.getActionId());
+            }
+
+            rspInfo.initSuccess(actionInfo.getActionId());
+            rspInfo.setUser(user);
+            return rspInfo;
+        }
     }
 
     public UserUpdateRspInfo update(UserUpdateActionInfo actionInfo) {
@@ -78,15 +129,6 @@ public class UserService {
         return rspInfo;
     }
 
-
-    public UserLoginRspInfo login(UserLoginActionInfo actionInfo) {
-        User user = userDao.findById(actionInfo.getUserId());
-
-        UserLoginRspInfo rspInfo = new UserLoginRspInfo();
-        rspInfo.initSuccess(actionInfo.getActionId());
-        rspInfo.setUser(user);
-        return rspInfo;
-    }
 
     public UserFindAllRspInfo findAll(UserFindAllActionInfo actionInfo) {
         List<UserDetail> userDetailList = new ArrayList<>();

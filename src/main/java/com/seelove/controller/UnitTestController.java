@@ -55,8 +55,26 @@ public class UnitTestController {
     }
 
     @org.junit.Test
-    public void userCreateTest() throws Exception {
-        UserCreateActionInfo actionInfo = new UserCreateActionInfo(RequestCode.USER_CREATE, "sdddddddd", "sssss");
+    public void sendSMS() throws Exception {
+        SecurityCodeSendActionInfo actionInfo = new SecurityCodeSendActionInfo(RequestCode.SEND_SECURITY_CODE, "15810592135", "1");
+        requestInfo.setActionInfo(actionInfo);
+        String postJson = GsonUtil.toJson(requestInfo);
+        System.out.println("=============== 参数准备完成 =============================================");
+        System.out.println("====" + postJson);
+
+        ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post(requestUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(postJson));
+        MvcResult mvcResult = resultActions.andReturn();
+        String result = mvcResult.getResponse().getContentAsString();
+        System.out.println("=============== 请求获得响应 =============================================");
+        System.out.println("====" + result);
+    }
+
+    @org.junit.Test
+    public void userRegisterLoginTest() throws Exception {
+//        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, User.ACCOUNT_TYPE_WECHAT, "我是第三方用戶");
+        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, User.ACCOUNT_TYPE_PHONE, "15810592135", "3769");
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");
@@ -248,16 +266,4 @@ public class UnitTestController {
     }
 
 
-    @org.junit.Test
-    public void sendSMS() throws Exception {
-        Random random = new Random();
-        String code = String.valueOf(random.nextInt(9999));
-        String phoneNumber = "13426288237";
-        System.out.println("=============== 参数准备完成 =============================================");
-        System.out.println("====" + phoneNumber + " | " + code);
-
-        AlibabaAliqinFcSmsNumSendResponse rsp = AliDaYuManager.getInstance().sendSMS(phoneNumber, code);
-        System.out.println("=============== 请求获得响应 =============================================");
-        System.out.println("====" + (null == rsp ? "error" : rsp.getBody()));
-    }
 }

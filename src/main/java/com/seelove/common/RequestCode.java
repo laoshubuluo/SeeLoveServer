@@ -8,8 +8,8 @@ public class RequestCode {
 
     public static final int TOKEN_SUCCESS = 200;
 
-    public static final int USER_CREATE = 1001;
-    public static final int USER_LOGIN = 1002;
+    public static final int USER_REGISTER_LOGIN = 1001;
+    public static final int SEND_SECURITY_CODE = 1002;
     public static final int USER_FIND_ALL = 1003;
     public static final int USER_FIND_DETAIL = 1004;
     public static final int USER_UPDATE = 1005;

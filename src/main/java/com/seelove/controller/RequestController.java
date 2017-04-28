@@ -3,14 +3,10 @@ package com.seelove.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.seelove.common.Constant;
 import com.seelove.common.RequestCode;
-import com.seelove.entity.enums.ResponseType;
 import com.seelove.entity.network.request.*;
 import com.seelove.entity.network.request.base.RequestInfo;
 import com.seelove.entity.network.response.base.ResponseInfo;
-import com.seelove.service.FollowService;
-import com.seelove.service.NewsService;
-import com.seelove.service.UserService;
-import com.seelove.service.VideoService;
+import com.seelove.service.*;
 import com.seelove.utils.GsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +36,8 @@ public class RequestController {
     private FollowService followService;
     @Resource
     private NewsService newsService;
+    @Resource
+    private SecurityCodeService securityCodeService;
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -59,20 +57,19 @@ public class RequestController {
         JSONObject jsonObject = JSONObject.parseObject(json);
         String actionInfoStr = jsonObject.getString("actionInfo");
         switch (requestInfo.getActionInfo().getActionId()) {
-            // 用户创建
-            case RequestCode.USER_CREATE:
-                UserCreateActionInfo userCreateActionInfo = GsonUtil.fromJson(actionInfoStr, UserCreateActionInfo.class);
-                response = userService.create(userCreateActionInfo);
+            // 发送验证码
+            case RequestCode.SEND_SECURITY_CODE:
+                SecurityCodeSendActionInfo securityCodeSendActionInfo = GsonUtil.fromJson(actionInfoStr, SecurityCodeSendActionInfo.class);
+                response = securityCodeService.send(securityCodeSendActionInfo);
+                // 注册登录
+            case RequestCode.USER_REGISTER_LOGIN:
+                UserRegisterLoginActionInfo userRegisterLoginActionInfo = GsonUtil.fromJson(actionInfoStr, UserRegisterLoginActionInfo.class);
+                response = userService.login(userRegisterLoginActionInfo);
                 break;
             // 用户更新
             case RequestCode.USER_UPDATE:
                 UserUpdateActionInfo userUpdateActionInfo = GsonUtil.fromJson(actionInfoStr, UserUpdateActionInfo.class);
                 response = userService.update(userUpdateActionInfo);
-                break;
-            // 用户登录
-            case RequestCode.USER_LOGIN:
-                UserLoginActionInfo userLoginActionInfo = GsonUtil.fromJson(actionInfoStr, UserLoginActionInfo.class);
-                response = userService.login(userLoginActionInfo);
                 break;
             // 获取所有用户
             case RequestCode.USER_FIND_ALL:

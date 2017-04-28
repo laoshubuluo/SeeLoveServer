@@ -28,7 +28,7 @@ public class SecurityCodeService {
     public SecurityCodeService() {
     }
 
-    public SecurityCodeSendRspInfo create(SecurityCodeSendActionInfo actionInfo) {
+    public SecurityCodeSendRspInfo send(SecurityCodeSendActionInfo actionInfo) {
         SecurityCodeSendRspInfo rspInfo = new SecurityCodeSendRspInfo();
         if (StringUtil.isNullOrBlank(actionInfo.getPhoneNumber())) {
             // TODO by L.jinzhu for  校验手机号合法性
@@ -40,6 +40,8 @@ public class SecurityCodeService {
         String code = String.valueOf(random.nextInt(9999));
         String phoneNumber = actionInfo.getPhoneNumber();
         AliDaYuManager.getInstance().sendSMS(phoneNumber, code);
+        // 清理同类型旧验证码
+        securityCodeDao.delete(phoneNumber, actionInfo.getType());
         // 验证码入库
         securityCodeDao.create(phoneNumber, code, actionInfo.getType(), new Date().toString());
 

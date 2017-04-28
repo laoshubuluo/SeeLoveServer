@@ -9,11 +9,16 @@ import java.io.Serializable;
  * @date 2017-03-31 18:07
  */
 public class User implements Serializable {
+    public static final int ACCOUNT_TYPE_WECHAT = 1;// 微信
+    public static final int ACCOUNT_TYPE_QQ = 2;// QQ
+    public static final int ACCOUNT_TYPE_PHONE = 3;// 手机号
+
     // 用户基本信息
     private long userId; // 用户id,唯一标示
+    private String account;// 用户名
+    private int accountType = 0; // 用户类型 1:微信;2:QQ;3:手机号
     private String headUrl; // 用户头像
     private String nickName; // 用户昵称
-    private int accountType = 0; // 0:未知;1:微信;2:QQ
     private int age = 0; // 用户年龄
     private String sex;//性别 0:未知;1男;2女
     private String bigImg; // 用户信息默认大图
@@ -222,25 +227,34 @@ public class User implements Serializable {
         this.followedCount = followedCount;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", headUrl='" + headUrl + '\'' +
                 ", nickName='" + nickName + '\'' +
+                ", account='" + account + '\'' +
                 ", accountType=" + accountType +
                 ", age=" + age +
                 ", sex='" + sex + '\'' +
                 ", bigImg='" + bigImg + '\'' +
-                ", cityCode=" + cityCode +
+                ", cityCode='" + cityCode + '\'' +
                 ", cityName='" + cityName + '\'' +
-                ", workCode=" + workCode +
+                ", workCode='" + workCode + '\'' +
                 ", workName='" + workName + '\'' +
-                ", educationCode=" + educationCode +
+                ", educationCode='" + educationCode + '\'' +
                 ", educationName='" + educationName + '\'' +
-                ", houseCode=" + houseCode +
+                ", houseCode='" + houseCode + '\'' +
                 ", houseName='" + houseName + '\'' +
-                ", marriageCode=" + marriageCode +
+                ", marriageCode='" + marriageCode + '\'' +
                 ", marriageName='" + marriageName + '\'' +
                 ", introduce='" + introduce + '\'' +
                 ", remark='" + remark + '\'' +

@@ -23,6 +23,6 @@ public interface SecurityCodeDao {
     @Delete("delete from securitycodeinfo where phoneNumber=#{phoneNumber} and type=#{type}")
     void delete(@Param("phoneNumber") String phoneNumber, @Param("type") String type);
 
-    @Select("select * from securitycodeinfo where phoneNumber=#{phoneNumber} and type=#{type} limit 0,1")
-    SecurityCode find(@Param("phoneNumber") String phoneNumber, @Param("type") String type);
+    @Select("select * from securitycodeinfo where phoneNumber=#{phoneNumber} and type=#{type} and code=#{code} limit 0,1")
+    SecurityCode find(@Param("phoneNumber") String phoneNumber, @Param("type") String type, @Param("code") String code);
 }

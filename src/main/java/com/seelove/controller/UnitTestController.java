@@ -7,7 +7,9 @@ import com.seelove.entity.local.video.Video;
 import com.seelove.entity.network.request.*;
 import com.seelove.entity.network.request.base.RequestInfo;
 import com.seelove.entity.network.response.UserFindAllRspInfo;
+import com.seelove.manager.AliDaYuManager;
 import com.seelove.utils.GsonUtil;
+import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.servlet.ServletContext;
+import java.util.Random;
 
 /**
  * 测试接口
@@ -242,5 +245,19 @@ public class UnitTestController {
         String result = mvcResult.getResponse().getContentAsString();
         System.out.println("=============== 请求获得响应 =============================================");
         System.out.println("====" + result);
+    }
+
+
+    @org.junit.Test
+    public void sendSMS() throws Exception {
+        Random random = new Random();
+        String code = String.valueOf(random.nextInt(9999));
+        String phoneNumber = "13426288237";
+        System.out.println("=============== 参数准备完成 =============================================");
+        System.out.println("====" + phoneNumber + " | " + code);
+
+        AlibabaAliqinFcSmsNumSendResponse rsp = AliDaYuManager.getInstance().sendSMS(phoneNumber, code);
+        System.out.println("=============== 请求获得响应 =============================================");
+        System.out.println("====" + (null == rsp ? "error" : rsp.getBody()));
     }
 }

@@ -98,6 +98,9 @@ public class UserService {
             userDetail.setUser(user);
             // 绑定默认视频
             Video defaultVideo = videoDao.findDefault(user.getUserId());
+            if (null == defaultVideo) {
+                continue;// 没有默认视频的用户不予展示
+            }
             userDetail.setDefultVideo(defaultVideo);
 
             userDetailList.add(userDetail);

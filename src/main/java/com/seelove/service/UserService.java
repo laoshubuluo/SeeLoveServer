@@ -49,17 +49,19 @@ public class UserService {
         }
         // 查询是否已经存在用户
         User user = null;
+        UserDetail userDetail = null;
         switch (actionInfo.getAccountType()) {
             case User.ACCOUNT_TYPE_PHONE:
                 // 验证码校验失败
-                SecurityCode securityCode = securityCodeDao.find(actionInfo.getPhoneNumber(), "1", actionInfo.getCode());
+                SecurityCode securityCode = securityCodeDao.find(actionInfo.getPhoneNumber(), SecurityCode.CODE_TYPE_REGISTER_LOGIN, actionInfo.getCode());
                 if (null == securityCode) {
                     rspInfo.initError(actionInfo.getActionId(), ResponseType.ERROR_4_SECRITY_CODE_ERROR);
-                    rspInfo.setUser(user);
                     return rspInfo;
                 }
                 // 验证码校验成功
                 user = userDao.findByAccount(User.ACCOUNT_TYPE_PHONE, actionInfo.getPhoneNumber());
+                // 清理同类型旧验证码
+                securityCodeDao.delete(actionInfo.getPhoneNumber(), SecurityCode.CODE_TYPE_REGISTER_LOGIN);
                 break;
             case User.ACCOUNT_TYPE_WECHAT:
                 user = userDao.findByAccount(User.ACCOUNT_TYPE_WECHAT, actionInfo.getDataFromOtherPlatform());
@@ -71,13 +73,19 @@ public class UserService {
 
         // 存在用户，登录
         if (null != user) {
+            userDetail = new UserDetail();
+            userDetail.setUser(user);
+            List<Video> videoList = videoDao.findByUser(user.getUserId());
+            userDetail.setVideoList(videoList);
+
             rspInfo.initSuccess(actionInfo.getActionId());
-            rspInfo.setUser(user);
+            rspInfo.setUserDetail(userDetail);
             return rspInfo;
         }
         // 不存在用户，注册
         else {
             user = new User();
+            // TODO by L.jinzhu for test
             user.setHeadUrl("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4023417989,1385713059&fm=117&gp=0.jpg");
             switch (actionInfo.getAccountType()) {
                 case User.ACCOUNT_TYPE_PHONE:
@@ -109,8 +117,11 @@ public class UserService {
                 rspInfo.initError4OtherPlatform(actionInfo.getActionId());
             }
 
+            userDetail = new UserDetail();
+            userDetail.setUser(user);
+
             rspInfo.initSuccess(actionInfo.getActionId());
-            rspInfo.setUser(user);
+            rspInfo.setUserDetail(userDetail);
             return rspInfo;
         }
     }

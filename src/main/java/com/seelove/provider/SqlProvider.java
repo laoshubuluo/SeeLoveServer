@@ -45,7 +45,7 @@ public class SqlProvider {
         sql.append("select v.* from videoinfo v, user_video uv where 1=1");
 
         // 拼接用户列表
-        if (null != para.get("userList") && null != para.get("userList")) {
+        if (null != para.get("userList")) {
             List<User> userList = (List<User>) para.get("userList");
             // 存在关注的好友及对应视频
             if (null != userList && 0 != userList.size()) {
@@ -55,7 +55,7 @@ public class SqlProvider {
                 }
                 str = str.substring(0, str.lastIndexOf(","));
                 str += ")";
-                sql.append(" and uv.videoId = v.videoId and uv.userId in " + str + " order by v.videoId");
+                sql.append(" and uv.videoId = v.videoId and uv.userId in " + str + " order by v.videoId desc");
             }
             // 不存在关注的好友
             else {

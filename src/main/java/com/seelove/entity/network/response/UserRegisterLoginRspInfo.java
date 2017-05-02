@@ -1,7 +1,6 @@
 package com.seelove.entity.network.response;
 
-
-import com.seelove.entity.local.user.User;
+import com.seelove.entity.local.user.UserDetail;
 import com.seelove.entity.network.response.base.ResponseInfo;
 
 /**
@@ -10,14 +9,14 @@ import com.seelove.entity.network.response.base.ResponseInfo;
  * introduce : 响应实体
  */
 public class UserRegisterLoginRspInfo extends ResponseInfo {
-    private User user;
+    private UserDetail userDetail;
 
-    public User getUser() {
-        return user;
+    public UserDetail getUserDetail() {
+        return userDetail;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 
     @Override

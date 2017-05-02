@@ -39,8 +39,9 @@ public class NewsService {
 
     public NewsFindAllRspInfo findAll(NewsFindAllActionInfo actionInfo) {
         List<UserDetail> userDetailList = new ArrayList<>();
-        // 获取我关注的所有人
+        // 获取我关注的人
         List<User> userList = followDao.findByUserId(actionInfo.getUserId());
+        // 我关注的人为空，则获取默认视频
         if (null == userList || 0 == userList.size()) {
             return findDefalut(actionInfo);
         }
@@ -51,6 +52,7 @@ public class NewsService {
         }
         // 获取所有人的所有视频
         List<Video> videoList = videoDao.findAllByUserList(userList);
+        // 所有人的所有视频为空，则获取默认视频
         if (null == videoList || 0 == videoList.size()) {
             return findDefalut(actionInfo);
         }

@@ -37,4 +37,7 @@ public interface VideoDao {
 
     @Insert("insert into user_video (videoId,userId,isDefault) values (#{videoId},#{userId},#{isDefault})")
     void createUserVideo(@Param("videoId") Long videoId, @Param("userId") Long userId, @Param("isDefault") String isDefault);
+
+    @Update("update user_video set isDefault = 0 where userId=#{userId}")
+    void updateUserVideoSetAllNotDefault(@Param("userId") Long userId);
 }

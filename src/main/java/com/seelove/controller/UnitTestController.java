@@ -1,6 +1,7 @@
 package com.seelove.controller;
 
 import com.seelove.common.RequestCode;
+import com.seelove.entity.local.system.SecurityCode;
 import com.seelove.entity.local.user.Follow;
 import com.seelove.entity.local.user.User;
 import com.seelove.entity.local.video.Video;
@@ -56,7 +57,7 @@ public class UnitTestController {
 
     @org.junit.Test
     public void sendSMS() throws Exception {
-        SecurityCodeSendActionInfo actionInfo = new SecurityCodeSendActionInfo(RequestCode.SEND_SECURITY_CODE, "15810592135", "1");
+        SecurityCodeSendActionInfo actionInfo = new SecurityCodeSendActionInfo(RequestCode.SEND_SECURITY_CODE, "15810592135", SecurityCode.CODE_TYPE_REGISTER_LOGIN);
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");
@@ -170,9 +171,9 @@ public class UnitTestController {
     @org.junit.Test
     public void videoCreateTest() throws Exception {
         Video video = new Video();
-        video.setUserId(2);
+        video.setUserId(1);
         video.setIsDefault("1");
-        video.setVideoTitle("单元测试title");
+        video.setVideoTitle("video7");
         video.setVideoImg("http://a.hiphotos.baidu.com/baike/whfpf%3D180%2C140%2C50/sign=20fced2fde2a283443f3654b3d88f8d2/4bed2e738bd4b31cc7a469898dd6277f9e2ff86c.jpg");
         video.setVideoTime("212112");
         video.setVideoUrl("http://7xrjck.com1.z0.glb.clouddn.com/FtB4jjP1vmy27u2aHgVuVGf1GDXt");
@@ -250,7 +251,7 @@ public class UnitTestController {
 
     @org.junit.Test
     public void newsFindAllTest() throws Exception {
-        NewsFindAllActionInfo actionInfo = new NewsFindAllActionInfo(RequestCode.NEWS_FIND_ALL, 1);
+        NewsFindAllActionInfo actionInfo = new NewsFindAllActionInfo(RequestCode.NEWS_FIND_ALL, 2);
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");

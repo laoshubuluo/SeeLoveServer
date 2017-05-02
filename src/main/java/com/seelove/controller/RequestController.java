@@ -61,7 +61,8 @@ public class RequestController {
             case RequestCode.SEND_SECURITY_CODE:
                 SecurityCodeSendActionInfo securityCodeSendActionInfo = GsonUtil.fromJson(actionInfoStr, SecurityCodeSendActionInfo.class);
                 response = securityCodeService.send(securityCodeSendActionInfo);
-                // 注册登录
+                break;
+            // 注册登录
             case RequestCode.USER_REGISTER_LOGIN:
                 UserRegisterLoginActionInfo userRegisterLoginActionInfo = GsonUtil.fromJson(actionInfoStr, UserRegisterLoginActionInfo.class);
                 response = userService.login(userRegisterLoginActionInfo);

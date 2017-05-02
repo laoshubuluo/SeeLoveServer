@@ -9,9 +9,12 @@ import java.io.Serializable;
  * @date 2017-03-31 18:07
  */
 public class SecurityCode implements Serializable {
+    public static final String CODE_TYPE_REGISTER_LOGIN = "1";// 1、登录注册
+    public static final String CODE_TYPE_BIND_PHONE= "2";// 2、绑定手机号
+
     private String phoneNumber; // 手机号
     private String code; // 验证码
-    private String type;// 验证码类型 1、登录注册 2、绑定手机号
+    private String type;// 验证码类型 this.CODE_TYPE
     private String sendTime;// 发送时间
 
     public String getPhoneNumber() {

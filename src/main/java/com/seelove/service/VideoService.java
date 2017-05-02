@@ -37,8 +37,10 @@ public class VideoService {
 
         // 保存video
         videoDao.create(video);
-        // 保存user_video
-        videoDao.createUserVideo(video.getVideoId(), video.getUserId(), video.getIsDefault());
+        // 更新之前的所有视频为非默认视频
+        videoDao.updateUserVideoSetAllNotDefault(video.getUserId());
+        // 保存user_video,并设定为默认视频
+        videoDao.createUserVideo(video.getVideoId(), video.getUserId(), "1");
 
         rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setVideo(video);

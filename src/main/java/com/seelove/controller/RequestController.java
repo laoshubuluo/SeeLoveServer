@@ -87,6 +87,11 @@ public class RequestController {
                 VideoCreateActionInfo videoCreateActionInfo = GsonUtil.fromJson(actionInfoStr, VideoCreateActionInfo.class);
                 response = videoService.create(videoCreateActionInfo);
                 break;
+            // 删除视频
+            case RequestCode.VIDEO_DELETE:
+                VideoDeleteActionInfo videoDeleteActionInfo = GsonUtil.fromJson(actionInfoStr, VideoDeleteActionInfo.class);
+                response = videoService.delete(videoDeleteActionInfo);
+                break;
             // 关注、取消关注
             case RequestCode.FOLLOW:
                 FollowActionInfo followActionInfo = GsonUtil.fromJson(actionInfoStr, FollowActionInfo.class);

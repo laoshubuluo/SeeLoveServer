@@ -32,9 +32,9 @@ public interface UserDao {
     void create(@Param("user") User user);
 
     @Update("update userinfo set " +
-            "headUrl=#{user.headUrl},nickName=#{user.nickName},account=#{user.account},accountType=#{user.accountType},age=#{user.age},sex=#{user.sex},bigImg=#{user.bigImg},cityCode=#{user.cityCode}," +
+            "headUrl=#{user.headUrl},nickName=#{user.nickName},age=#{user.age},sex=#{user.sex},bigImg=#{user.bigImg},cityCode=#{user.cityCode}," +
             "cityName=#{user.cityName},workCode=#{user.workCode},workName=#{user.workName},educationCode=#{user.educationCode},educationName=#{user.educationName},houseCode=#{user.houseCode}," +
-            "houseName=#{user.houseName},marriageCode=#{user.marriageCode},marriageName=#{user.marriageName},introduce=#{user.introduce},remark=#{user.remark},token4RongCloud=#{user.token4RongCloud}" +
+            "houseName=#{user.houseName},marriageCode=#{user.marriageCode},marriageName=#{user.marriageName},introduce=#{user.introduce},remark=#{user.remark}" +
             " where userId=#{user.userId}")
     void update(@Param("user") User user);
 

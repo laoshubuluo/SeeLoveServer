@@ -85,8 +85,6 @@ public class UserService {
         // 不存在用户，注册
         else {
             user = new User();
-            // TODO by L.jinzhu for test
-            user.setHeadUrl("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4023417989,1385713059&fm=117&gp=0.jpg");
             switch (actionInfo.getAccountType()) {
                 case User.ACCOUNT_TYPE_PHONE:
                     user.setAccountType(User.ACCOUNT_TYPE_PHONE);

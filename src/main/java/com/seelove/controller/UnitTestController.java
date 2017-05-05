@@ -25,7 +25,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.servlet.ServletContext;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 测试接口
@@ -115,10 +116,7 @@ public class UnitTestController {
         User user = new User();
         user.setUserId(1);
         user.setNickName("啥的");
-        user.setHeadUrl("啥的");
-        user.setToken4RongCloud("啥的");
         user.setWorkName("啥的");
-        user.setAccountType(1);
         user.setAge(22);
         user.setBigImg("啥的");
         user.setCityCode("啥的");
@@ -180,6 +178,27 @@ public class UnitTestController {
         video.setVideoPlayTime("23423432");
 
         VideoCreateActionInfo actionInfo = new VideoCreateActionInfo(RequestCode.VIDEO_CREATE, video);
+        requestInfo.setActionInfo(actionInfo);
+        String postJson = GsonUtil.toJson(requestInfo);
+        System.out.println("=============== 参数准备完成 =============================================");
+        System.out.println("====" + postJson);
+
+        ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post(requestUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(postJson));
+        MvcResult mvcResult = resultActions.andReturn();
+        String result = mvcResult.getResponse().getContentAsString();
+        System.out.println("=============== 请求获得响应 =============================================");
+        System.out.println("====" + result);
+    }
+
+    @org.junit.Test
+    public void videoDeleteTest() throws Exception {
+        List<Long> videoIdList = new ArrayList<>();
+        videoIdList.add(10L);
+        videoIdList.add(12L);
+
+        VideoDeleteActionInfo actionInfo = new VideoDeleteActionInfo(RequestCode.VIDEO_DELETE, 1L, videoIdList);
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");
@@ -265,6 +284,4 @@ public class UnitTestController {
         System.out.println("=============== 请求获得响应 =============================================");
         System.out.println("====" + result);
     }
-
-
 }

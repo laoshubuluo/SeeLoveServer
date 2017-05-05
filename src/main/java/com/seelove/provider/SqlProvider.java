@@ -61,6 +61,54 @@ public class SqlProvider {
             else {
                 sql.append(" and 1=2");
             }
+        } else {
+            sql.append(" and 1=2");
+        }
+        return sql.toString();
+    }
+
+    public String deleteVideo(Map<String, Object> para) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("delete from videoinfo where 1=1");
+
+        if (null != para.get("videoList")) {
+            List<Long> videoList = (List<Long>) para.get("videoList");
+            if (null != videoList && 0 != videoList.size()) {
+                String str = "(";
+                for (Long id : videoList) {
+                    str += id + ",";
+                }
+                str = str.substring(0, str.lastIndexOf(","));
+                str += ")";
+                sql.append(" and videoId in " + str);
+            } else {
+                sql.append(" and 1=2");
+            }
+        } else {
+            sql.append(" and 1=2");
+        }
+        return sql.toString();
+    }
+
+    public String deleteUserVideo(Map<String, Object> para) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("delete from user_video where 1=1");
+
+        if (null != para.get("videoList")) {
+            List<Long> videoList = (List<Long>) para.get("videoList");
+            if (null != videoList && 0 != videoList.size()) {
+                String str = "(";
+                for (Long id : videoList) {
+                    str += id + ",";
+                }
+                str = str.substring(0, str.lastIndexOf(","));
+                str += ")";
+                sql.append(" and videoId in " + str);
+            } else {
+                sql.append(" and 1=2");
+            }
+        } else {
+            sql.append(" and 1=2");
         }
         return sql.toString();
     }

@@ -40,4 +40,10 @@ public interface VideoDao {
 
     @Update("update user_video set isDefault = 0 where userId=#{userId}")
     void updateUserVideoSetAllNotDefault(@Param("userId") Long userId);
+
+    @DeleteProvider(type = SqlProvider.class, method = "deleteVideo")
+    int deleteVideo(@Param("videoList") List<Long> videoList);
+
+    @DeleteProvider(type = SqlProvider.class, method = "deleteUserVideo")
+    int deleteUserVideo(@Param("videoList") List<Long> videoList);
 }

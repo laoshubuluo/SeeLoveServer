@@ -107,12 +107,14 @@ public class UserService {
             userDao.create(user);
 
             // 获取融云token并更新数据库
+            user.setHeadUrl(StringUtil.isNullOrBlank(user.getHeadUrl()) ? "temp.jpg" : user.getHeadUrl());
             TokenResult tokenResult = RongCloudManager.getInstance().getToken(String.valueOf(user.getUserId()), user.getNickName(), user.getHeadUrl());
             if (null != tokenResult && RequestCode.TOKEN_SUCCESS == tokenResult.getCode()) {
                 user.setToken4RongCloud(tokenResult.getToken());
                 userDao.updateToken(user);
             } else {
                 rspInfo.initError4OtherPlatform(actionInfo.getActionId());
+                return rspInfo;
             }
 
             userDetail = new UserDetail();

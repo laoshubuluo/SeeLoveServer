@@ -12,15 +12,17 @@ public class UserRegisterLoginActionInfo extends ActionInfo {
     private int accountType;// User.accountType
 
     // 第三方平台快捷登录
-    private String dataFromOtherPlatform;//
+    private String dataFromOtherPlatform;
+    private String openId;
 
     // 手机号快捷注册登录
     private String phoneNumber;
     private String code;
 
-    public UserRegisterLoginActionInfo(int actionId, int accountType, String dataFromOtherPlatform) {
+    public UserRegisterLoginActionInfo(int actionId, String openId, int accountType, String dataFromOtherPlatform) {
         super(actionId);
         this.accountType = accountType;
+        this.openId = openId;
         this.dataFromOtherPlatform = dataFromOtherPlatform;
     }
 
@@ -61,5 +63,13 @@ public class UserRegisterLoginActionInfo extends ActionInfo {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

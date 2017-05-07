@@ -9,9 +9,18 @@ import com.seelove.entity.local.system.SecurityCode;
 import com.seelove.entity.local.user.User;
 import com.seelove.entity.local.user.UserDetail;
 import com.seelove.entity.local.video.Video;
-import com.seelove.entity.network.request.*;
-import com.seelove.entity.network.response.*;
+import com.seelove.entity.network.entity.User4QQ;
+import com.seelove.entity.network.entity.User4Wechat;
+import com.seelove.entity.network.request.UserFindAllActionInfo;
+import com.seelove.entity.network.request.UserFindDetailActionInfo;
+import com.seelove.entity.network.request.UserRegisterLoginActionInfo;
+import com.seelove.entity.network.request.UserUpdateActionInfo;
+import com.seelove.entity.network.response.UserFindAllRspInfo;
+import com.seelove.entity.network.response.UserFindDetailRspInfo;
+import com.seelove.entity.network.response.UserRegisterLoginRspInfo;
+import com.seelove.entity.network.response.UserUpdateRspInfo;
 import com.seelove.manager.RongCloudManager;
+import com.seelove.utils.GsonUtil;
 import com.seelove.utils.StringUtil;
 import io.rong.models.TokenResult;
 import org.slf4j.Logger;
@@ -64,10 +73,10 @@ public class UserService {
                 securityCodeDao.delete(actionInfo.getPhoneNumber(), SecurityCode.CODE_TYPE_REGISTER_LOGIN);
                 break;
             case User.ACCOUNT_TYPE_WECHAT:
-                user = userDao.findByAccount(User.ACCOUNT_TYPE_WECHAT, actionInfo.getDataFromOtherPlatform());
+                user = userDao.findByAccount(User.ACCOUNT_TYPE_WECHAT, actionInfo.getOpenId());
                 break;
             case User.ACCOUNT_TYPE_QQ:
-                user = userDao.findByAccount(User.ACCOUNT_TYPE_QQ, actionInfo.getDataFromOtherPlatform());
+                user = userDao.findByAccount(User.ACCOUNT_TYPE_QQ, actionInfo.getOpenId());
                 break;
         }
 
@@ -92,16 +101,31 @@ public class UserService {
                     user.setNickName(actionInfo.getPhoneNumber());
                     break;
                 case User.ACCOUNT_TYPE_WECHAT:
-                    //  TODO by L.jinzhu  for 带解析
+                    //  TODO by L.jinzhu  for 待解析
+                    if (StringUtil.isNullOrBlank(actionInfo.getDataFromOtherPlatform())) {
+                        rspInfo.initError4Param(actionInfo.getActionId());
+                        return rspInfo;
+                    }
+                    User4Wechat user4Wechat = GsonUtil.fromJson(actionInfo.getDataFromOtherPlatform(), User4Wechat.class);
                     user.setAccountType(User.ACCOUNT_TYPE_WECHAT);
-                    user.setAccount(actionInfo.getDataFromOtherPlatform());
-                    user.setNickName(actionInfo.getDataFromOtherPlatform());
+                    user.setAccount(actionInfo.getOpenId());
+                    user.setNickName(user4Wechat.getNickName());
+                    user.setHeadUrl(user4Wechat.getHeadUrl());
+                    user.setSex(user4Wechat.getSex());
+                    user.setCityName(user4Wechat.getCityName());
                     break;
                 case User.ACCOUNT_TYPE_QQ:
-                    //  TODO by L.jinzhu  for 带解析
+                    if (StringUtil.isNullOrBlank(actionInfo.getDataFromOtherPlatform())) {
+                        rspInfo.initError4Param(actionInfo.getActionId());
+                        return rspInfo;
+                    }
+                    User4QQ user4QQ = GsonUtil.fromJson(actionInfo.getDataFromOtherPlatform(), User4QQ.class);
                     user.setAccountType(User.ACCOUNT_TYPE_QQ);
-                    user.setAccount(actionInfo.getDataFromOtherPlatform());
-                    user.setNickName(actionInfo.getDataFromOtherPlatform());
+                    user.setAccount(actionInfo.getOpenId());
+                    user.setNickName(user4QQ.getNickName());
+                    user.setHeadUrl(user4QQ.getHeadUrl());
+                    user.setSex(user4QQ.getSex());
+                    user.setCityName(user4QQ.getCityName());
                     break;
             }
             userDao.create(user);

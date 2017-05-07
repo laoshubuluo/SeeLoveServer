@@ -1,6 +1,7 @@
 package com.seelove.service;
 
 import com.seelove.common.RequestCode;
+import com.seelove.dao.FollowDao;
 import com.seelove.dao.SecurityCodeDao;
 import com.seelove.dao.UserDao;
 import com.seelove.dao.VideoDao;
@@ -45,6 +46,8 @@ public class UserService {
     @Resource
     private VideoDao videoDao;
     @Resource
+    private FollowDao followDao;
+    @Resource
     private SecurityCodeDao securityCodeDao;
 
     public UserService() {
@@ -83,7 +86,13 @@ public class UserService {
         // 存在用户，登录
         if (null != user) {
             userDetail = new UserDetail();
+            // 绑定视频数、关注数、被关注数
+            user.setVideoCount(videoDao.findUserVideoCount(user.getUserId()));
+            user.setFollowCount(followDao.findCountByUserId(user.getUserId()));
+            user.setFollowedCount(followDao.findCountByFollowedUserId(user.getUserId()));
+            // 綁定用户
             userDetail.setUser(user);
+            // 绑定视频列表
             List<Video> videoList = videoDao.findByUser(user.getUserId());
             userDetail.setVideoList(videoList);
 
@@ -190,15 +199,23 @@ public class UserService {
     }
 
     public UserFindDetailRspInfo findDetail(UserFindDetailActionInfo actionInfo) {
+        UserFindDetailRspInfo rspInfo = new UserFindDetailRspInfo();
         UserDetail userDetail = new UserDetail();
-        // 綁定用户
         User user = userDao.findById(actionInfo.getUserId());
+        if (null == user) {
+            rspInfo.initError(actionInfo.getActionId(), ResponseType.ERROR_4_USER_IS_NOT_EXIST);
+            return rspInfo;
+        }
+        // 绑定视频数、关注数、被关注数
+        user.setVideoCount(videoDao.findUserVideoCount(user.getUserId()));
+        user.setFollowCount(followDao.findCountByUserId(user.getUserId()));
+        user.setFollowedCount(followDao.findCountByFollowedUserId(user.getUserId()));
+        // 綁定用户
         userDetail.setUser(user);
         // 绑定视频列表
         List<Video> videoList = videoDao.findByUser(user.getUserId());
         userDetail.setVideoList(videoList);
 
-        UserFindDetailRspInfo rspInfo = new UserFindDetailRspInfo();
         rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserDetail(userDetail);
         return rspInfo;

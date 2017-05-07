@@ -77,12 +77,12 @@ public class UnitTestController {
     public void userRegisterLoginTest() throws Exception {
         // 第三方登录
         // dataFromOtherPlatform   {"ret":0,"msg":"","is_lost":0,"nickname":"IT鼠部落","gender":"男","province":"北京","city":"平谷","figureurl":"http:\/\/qzapp.qlogo.cn\/qzapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/30","figureurl_1":"http:\/\/qzapp.qlogo.cn\/qzapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/50","figureurl_2":"http:\/\/qzapp.qlogo.cn\/qzapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/100","figureurl_qq_1":"http:\/\/q.qlogo.cn\/qqapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/40","figureurl_qq_2":"http:\/\/q.qlogo.cn\/qqapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/100","is_yellow_vip":"0","vip":"0","yellow_vip_level":"0","level":"0","is_yellow_year_vip":"0"}
-        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(
-                RequestCode.USER_REGISTER_LOGIN, "17EFDCF4DE2101561D27119C0D1CE2E7", User.ACCOUNT_TYPE_QQ,
-                "{\"ret\":0,\"msg\":\"\",\"is_lost\":0,\"nickname\":\"IT鼠部落\",\"gender\":\"男\",\"province\":\"北京\",\"city\":\"平谷\",\"figureurl\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/30\",\"figureurl_1\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/50\",\"figureurl_2\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"figureurl_qq_1\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/40\",\"figureurl_qq_2\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"is_yellow_vip\":\"0\",\"vip\":\"0\",\"yellow_vip_level\":\"0\",\"level\":\"0\",\"is_yellow_year_vip\":\"0\"}"
-        );
+//        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(
+//                RequestCode.USER_REGISTER_LOGIN, "17EFDCF4DE2101561D27119C0D1CE2E7", User.ACCOUNT_TYPE_QQ,
+//                "{\"ret\":0,\"msg\":\"\",\"is_lost\":0,\"nickname\":\"IT鼠部落\",\"gender\":\"男\",\"province\":\"北京\",\"city\":\"平谷\",\"figureurl\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/30\",\"figureurl_1\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/50\",\"figureurl_2\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"figureurl_qq_1\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/40\",\"figureurl_qq_2\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"is_yellow_vip\":\"0\",\"vip\":\"0\",\"yellow_vip_level\":\"0\",\"level\":\"0\",\"is_yellow_year_vip\":\"0\"}"
+//        );
         // 手机号登录
-        // UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, User.ACCOUNT_TYPE_PHONE, "15810592135", "3769");
+        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, User.ACCOUNT_TYPE_PHONE, "15810592135", "3769");
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");
@@ -157,7 +157,7 @@ public class UnitTestController {
 
     @org.junit.Test
     public void userFindDetailTest() throws Exception {
-        UserFindDetailActionInfo actionInfo = new UserFindDetailActionInfo(RequestCode.USER_FIND_DETAIL, 1);
+        UserFindDetailActionInfo actionInfo = new UserFindDetailActionInfo(RequestCode.USER_FIND_DETAIL, 7);
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");

@@ -24,6 +24,9 @@ public interface VideoDao {
     @Select("select v.* from videoinfo v, user_video uv where uv.userId=#{userId} and uv.isDefault = 1 and uv.videoId = v.videoId limit 0,1")
     Video findDefault(@Param("userId") Long userId);
 
+    @Select("select count(*) from user_video where userId=#{userId}")
+    int findUserVideoCount(@Param("userId") Long userId);
+
     @SelectProvider(type = SqlProvider.class, method = "videoFindAllByUserList")
     List<Video> findAllByUserList(@Param("userList") List<User> userList);
 

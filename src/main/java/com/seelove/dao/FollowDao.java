@@ -27,4 +27,10 @@ public interface FollowDao {
 
     @Select("select u.* from userinfo u, followinfo f where f.followedUserId=#{followedUserId} and f.userId = u.userId")
     List<User> findByFollowedUserId(@Param("followedUserId") Long followedUserId);
+
+    @Select("select count(*) from followinfo where userId=#{userId}")
+    int findCountByUserId(@Param("userId") Long userId);
+
+    @Select("select count(*) from followinfo where followedUserId=#{followedUserId}")
+    int findCountByFollowedUserId(@Param("followedUserId") Long followedUserId);
 }

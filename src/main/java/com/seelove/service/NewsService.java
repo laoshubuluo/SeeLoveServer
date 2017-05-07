@@ -45,6 +45,9 @@ public class NewsService {
         if (null == userList || 0 == userList.size()) {
             return findDefalut(actionInfo);
         }
+        // 增加自己
+        User my = userDao.findById(actionInfo.getUserId());
+        userList.add(my);
         // 放在map中，后续使用
         Map<Long, User> userMap = new HashMap<>();
         for (User user : userList) {

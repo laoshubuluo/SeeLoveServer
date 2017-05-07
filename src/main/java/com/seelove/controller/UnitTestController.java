@@ -1,6 +1,7 @@
 package com.seelove.controller;
 
 import com.seelove.common.RequestCode;
+import com.seelove.entity.enums.DataGetType;
 import com.seelove.entity.local.system.SecurityCode;
 import com.seelove.entity.local.user.Follow;
 import com.seelove.entity.local.user.User;
@@ -77,12 +78,12 @@ public class UnitTestController {
     public void userRegisterLoginTest() throws Exception {
         // 第三方登录
         // dataFromOtherPlatform   {"ret":0,"msg":"","is_lost":0,"nickname":"IT鼠部落","gender":"男","province":"北京","city":"平谷","figureurl":"http:\/\/qzapp.qlogo.cn\/qzapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/30","figureurl_1":"http:\/\/qzapp.qlogo.cn\/qzapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/50","figureurl_2":"http:\/\/qzapp.qlogo.cn\/qzapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/100","figureurl_qq_1":"http:\/\/q.qlogo.cn\/qqapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/40","figureurl_qq_2":"http:\/\/q.qlogo.cn\/qqapp\/1105974837\/17EFDCF4DE2101561D27119C0D1CE2E7\/100","is_yellow_vip":"0","vip":"0","yellow_vip_level":"0","level":"0","is_yellow_year_vip":"0"}
-//        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(
-//                RequestCode.USER_REGISTER_LOGIN, "17EFDCF4DE2101561D27119C0D1CE2E7", User.ACCOUNT_TYPE_QQ,
-//                "{\"ret\":0,\"msg\":\"\",\"is_lost\":0,\"nickname\":\"IT鼠部落\",\"gender\":\"男\",\"province\":\"北京\",\"city\":\"平谷\",\"figureurl\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/30\",\"figureurl_1\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/50\",\"figureurl_2\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"figureurl_qq_1\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/40\",\"figureurl_qq_2\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"is_yellow_vip\":\"0\",\"vip\":\"0\",\"yellow_vip_level\":\"0\",\"level\":\"0\",\"is_yellow_year_vip\":\"0\"}"
-//        );
+        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(
+                RequestCode.USER_REGISTER_LOGIN, "17EFDCF4DE2101561223423423342C0D1CE2E7", User.ACCOUNT_TYPE_QQ,
+                "{\"ret\":0,\"msg\":\"\",\"is_lost\":0,\"nickname\":\"sfsd\",\"gender\":\"男\",\"province\":\"北京\",\"city\":\"平谷\",\"figureurl\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/30\",\"figureurl_1\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/50\",\"figureurl_2\":\"http:\\/\\/qzapp.qlogo.cn\\/qzapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"figureurl_qq_1\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/40\",\"figureurl_qq_2\":\"http:\\/\\/q.qlogo.cn\\/qqapp\\/1105974837\\/17EFDCF4DE2101561D27119C0D1CE2E7\\/100\",\"is_yellow_vip\":\"0\",\"vip\":\"0\",\"yellow_vip_level\":\"0\",\"level\":\"0\",\"is_yellow_year_vip\":\"0\"}"
+        );
         // 手机号登录
-        UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, User.ACCOUNT_TYPE_PHONE, "15810592135", "3769");
+        // UserRegisterLoginActionInfo actionInfo = new UserRegisterLoginActionInfo(RequestCode.USER_REGISTER_LOGIN, User.ACCOUNT_TYPE_PHONE, "15810592135", "3769");
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");
@@ -101,7 +102,7 @@ public class UnitTestController {
     public void userFindAllTest() throws Exception {
 //        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, 1, 33, "", "");
 //        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, 1, 33, "1", "");
-        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, 1, 0, 0, "", "");
+        UserFindAllActionInfo actionInfo = new UserFindAllActionInfo(RequestCode.USER_FIND_ALL, 1, DataGetType.DOWN.getCode(), 1, 0, 0, "", "");
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");

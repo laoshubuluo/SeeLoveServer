@@ -21,7 +21,7 @@ public interface UserDao {
     User findByAccount(@Param("accountType") int accountType, @Param("account") String account);
 
     @SelectProvider(type = SqlProvider.class, method = "userFindAll")
-    List<User> findAll(@Param("ageStart") int ageStart, @Param("ageEnd") int ageEnd, @Param("sex") String sex, @Param("cityCode") String cityCode);
+    List<User> findAll(@Param("dataIndexStart") int dataIndexStart, @Param("dataIndexEnd") int dataIndexEnd, @Param("ageStart") int ageStart, @Param("ageEnd") int ageEnd, @Param("sex") String sex, @Param("cityCode") String cityCode);
 
     @Insert("insert into userinfo (" +
             "headUrl,nickName,account,accountType,age,sex,bigImg,cityCode,cityName,workCode,workName,educationCode,educationName,houseCode,houseName,marriageCode,marriageName,introduce,remark,token4RongCloud" +

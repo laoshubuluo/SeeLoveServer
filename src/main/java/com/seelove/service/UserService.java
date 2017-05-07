@@ -1,10 +1,12 @@
 package com.seelove.service;
 
+import com.seelove.common.Constant;
 import com.seelove.common.RequestCode;
 import com.seelove.dao.FollowDao;
 import com.seelove.dao.SecurityCodeDao;
 import com.seelove.dao.UserDao;
 import com.seelove.dao.VideoDao;
+import com.seelove.entity.enums.DataGetType;
 import com.seelove.entity.enums.ResponseType;
 import com.seelove.entity.local.system.SecurityCode;
 import com.seelove.entity.local.user.User;
@@ -173,10 +175,28 @@ public class UserService {
         return rspInfo;
     }
 
-
     public UserFindAllRspInfo findAll(UserFindAllActionInfo actionInfo) {
+        int dataIndexStart = 0;
+        int dataIndexEnd = 0;
+        int currentPage = 0;
+        if (0 == actionInfo.getPageNumber()) {
+            currentPage = 1;
+        } else {
+            // 上一页
+            if (DataGetType.UP.getCode() == actionInfo.getDataGetType()) {
+                currentPage = actionInfo.getPageNumber() - 1;
+            }
+            // 下一页
+            else if (DataGetType.DOWN.getCode() == actionInfo.getDataGetType()) {
+                currentPage = actionInfo.getPageNumber() + 1;
+            }
+        }
+        currentPage = currentPage <= 1 ? 1 : currentPage;
+        dataIndexStart = Constant.DATA_COUNT_OF_PAGE * (currentPage - 1);
+        dataIndexEnd = Constant.DATA_COUNT_OF_PAGE * currentPage;
+
         List<UserDetail> userDetailList = new ArrayList<>();
-        List<User> userList = userDao.findAll(actionInfo.getAgeStart(), actionInfo.getAgeEnd(), actionInfo.getSex(), actionInfo.getCityCode());
+        List<User> userList = userDao.findAll(dataIndexStart, dataIndexEnd, actionInfo.getAgeStart(), actionInfo.getAgeEnd(), actionInfo.getSex(), actionInfo.getCityCode());
         // 拼接数据
         for (User user : userList) {
             if (user.getUserId() == actionInfo.getUserId()) {

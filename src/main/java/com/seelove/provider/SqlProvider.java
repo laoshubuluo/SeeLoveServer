@@ -37,6 +37,14 @@ public class SqlProvider {
                 sql.append(" and cityCode = " + cityCode);
             }
         }
+        // 分页
+        if (null != para.get("dataIndexStart") && null != para.get("dataIndexEnd")) {
+            int dataIndexStart = (int) para.get("dataIndexStart");
+            int dataIndexEnd = (int) para.get("dataIndexEnd");
+            sql.append(" limit " + dataIndexStart + "," + dataIndexEnd);
+        } else {
+            sql.append(" limit 0,0");
+        }
         return sql.toString();
     }
 

@@ -7,4 +7,6 @@ package com.seelove.common;
 public class Constant {
     public static final String LOG_REQUEST = "[-----request-----] ";
     public static final String LOG_RESPONSE = "[-----response-----] ";
+
+    public static final int DATA_COUNT_OF_PAGE = 10; // 分页数据
 }

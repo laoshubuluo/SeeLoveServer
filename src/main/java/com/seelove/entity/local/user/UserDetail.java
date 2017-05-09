@@ -15,6 +15,7 @@ public class UserDetail {
     private Video defultVideo;// 默认视频
     private List<Video> videoList; // 用户视频列表
     private List<User> followUserList; // 用户关注列表
+    private int followStatus; // 用户关注状态 FollowStatus
 
     public User getUser() {
         return user;
@@ -46,5 +47,13 @@ public class UserDetail {
 
     public void setFollowUserList(List<User> followUserList) {
         this.followUserList = followUserList;
+    }
+
+    public int getFollowStatus() {
+        return followStatus;
+    }
+
+    public void setFollowStatus(int followStatus) {
+        this.followStatus = followStatus;
     }
 }

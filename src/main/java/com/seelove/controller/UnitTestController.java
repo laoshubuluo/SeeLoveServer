@@ -158,7 +158,7 @@ public class UnitTestController {
 
     @org.junit.Test
     public void userFindDetailTest() throws Exception {
-        UserFindDetailActionInfo actionInfo = new UserFindDetailActionInfo(RequestCode.USER_FIND_DETAIL, 7);
+        UserFindDetailActionInfo actionInfo = new UserFindDetailActionInfo(RequestCode.USER_FIND_DETAIL, 1, 2);
         requestInfo.setActionInfo(actionInfo);
         String postJson = GsonUtil.toJson(requestInfo);
         System.out.println("=============== 参数准备完成 =============================================");

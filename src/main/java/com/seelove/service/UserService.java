@@ -6,7 +6,7 @@ import com.seelove.dao.FollowDao;
 import com.seelove.dao.SecurityCodeDao;
 import com.seelove.dao.UserDao;
 import com.seelove.dao.VideoDao;
-import com.seelove.entity.enums.DataGetType;
+import com.seelove.entity.enums.FollowStatus;
 import com.seelove.entity.enums.ResponseType;
 import com.seelove.entity.local.system.SecurityCode;
 import com.seelove.entity.local.user.User;
@@ -224,7 +224,24 @@ public class UserService {
         // 绑定视频列表
         List<Video> videoList = videoDao.findByUser(user.getUserId());
         userDetail.setVideoList(videoList);
-
+        // 绑定关注状态(当前登录的用户与待查询的用户的关注关系)
+        if (0 == actionInfo.getCurrentLoginUserId()) {
+            userDetail.setFollowStatus(FollowStatus.NONE.getCode());// 未登录，互相不关注
+        } else {
+            int count1 = followDao.findCountByUserAndFollowedUser(actionInfo.getUserId(), actionInfo.getCurrentLoginUserId());
+            int count2 = followDao.findCountByUserAndFollowedUser(actionInfo.getCurrentLoginUserId(), actionInfo.getUserId());
+            if (count1 > 0 && count2 > 0) {// 互相关注
+                userDetail.setFollowStatus(FollowStatus.EACH_OTHER.getCode());
+            } else {
+                if (count1 > 0) {
+                    userDetail.setFollowStatus(FollowStatus.FOLLOW_LOGIN_USER.getCode());
+                } else if (count2 > 0) {
+                    userDetail.setFollowStatus(FollowStatus.FOLLOWED_BY_LOGIN_USER.getCode());
+                } else {
+                    userDetail.setFollowStatus(FollowStatus.NONE.getCode()); // 互相不关注
+                }
+            }
+        }
         rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserDetail(userDetail);
         return rspInfo;

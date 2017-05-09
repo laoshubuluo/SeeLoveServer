@@ -27,6 +27,9 @@ public interface VideoDao {
     @Select("select count(*) from user_video where userId=#{userId}")
     int findUserVideoCount(@Param("userId") Long userId);
 
+    @Select("select * from user_video where userId=#{userId}")
+    List<Video> findUserVideoByUser(@Param("userId") Long userId);
+
     @SelectProvider(type = SqlProvider.class, method = "videoFindAllByUserList")
     List<Video> findAllByUserList(@Param("dataIndexStart") int dataIndexStart, @Param("dataIndexEnd") int dataIndexEnd, @Param("userList") List<User> userList);
 
@@ -40,6 +43,9 @@ public interface VideoDao {
 
     @Insert("insert into user_video (videoId,userId,isDefault) values (#{videoId},#{userId},#{isDefault})")
     void createUserVideo(@Param("videoId") Long videoId, @Param("userId") Long userId, @Param("isDefault") String isDefault);
+
+    @Update("update user_video set isDefault = 1 where userId=#{userId} and videoId=#{videoId}")
+    void updateUserVideoSetDefault(@Param("userId") Long userId, @Param("videoId") Long videoId);
 
     @Update("update user_video set isDefault = 0 where userId=#{userId}")
     void updateUserVideoSetAllNotDefault(@Param("userId") Long userId);

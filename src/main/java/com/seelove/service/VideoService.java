@@ -1,7 +1,6 @@
 package com.seelove.service;
 
 import com.seelove.dao.VideoDao;
-import com.seelove.entity.enums.ResponseType;
 import com.seelove.entity.local.video.Video;
 import com.seelove.entity.network.request.VideoCreateActionInfo;
 import com.seelove.entity.network.request.VideoDeleteActionInfo;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Random;
 
 /**
  * 视频服务
@@ -62,9 +60,21 @@ public class VideoService {
         videoDao.deleteVideo(videoIdList);
         // 删除video_user
         videoDao.deleteUserVideo(videoIdList);
-        // TODO by L.jinzhu for 如果删除的是默认视频，则需要匹配新的默认视频。重新查看是否存在默认视频
-        //        actionInfo.getUserId()
-
+        // 查询删除操作后，用户是否存在默认视频，如果不存在（手动删除的是默认视频），则新增一个新的默认视频
+        List<Video> videoList = videoDao.findUserVideoByUser(actionInfo.getUserId());
+        if (null != videoList && videoList.size() > 0) {
+            boolean isExistDefaultVideo = false;
+            for (Video video : videoList) {
+                if ("1".equals(video.getIsDefault())) {
+                    isExistDefaultVideo = true;
+                    break;
+                }
+            }
+            // 存在视频但不存在默认视频
+            if (!isExistDefaultVideo) {
+                videoDao.updateUserVideoSetDefault(actionInfo.getUserId(), videoList.get(videoList.size() - 1).getVideoId());
+            }
+        }
         rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setVideoIdList(videoIdList);
         return rspInfo;

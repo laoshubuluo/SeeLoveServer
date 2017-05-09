@@ -38,6 +38,8 @@ public class RequestController {
     private NewsService newsService;
     @Resource
     private SecurityCodeService securityCodeService;
+    @Resource
+    private SystemService systemService;
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -111,6 +113,11 @@ public class RequestController {
             case RequestCode.NEWS_FIND_ALL:
                 NewsFindAllActionInfo newsFindAllActionInfo = GsonUtil.fromJson(actionInfoStr, NewsFindAllActionInfo.class);
                 response = newsService.findAll(newsFindAllActionInfo);
+                break;
+            // 最新版本
+            case RequestCode.SYSTEM_NEW_VERSION:
+                NewVersionActionInfo newVersionActionInfo = GsonUtil.fromJson(actionInfoStr, NewVersionActionInfo.class);
+                response = systemService.getNewVersion(newVersionActionInfo);
                 break;
             default:
                 response = new ResponseInfo();

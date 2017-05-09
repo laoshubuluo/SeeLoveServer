@@ -24,6 +24,12 @@ public class ResponseInfo extends AbstractResponseInfo {
         this.statusMsg = responseType.getMessage();
     }
 
+    public void initError4System(int actionId) {
+        this.actionId = actionId;
+        this.statusCode = ResponseType.ERROR.getCode();
+        this.statusMsg = ResponseType.ERROR.getMessage();
+    }
+
     public void initError4Param(int actionId) {
         this.actionId = actionId;
         this.statusCode = ResponseType.ERROR_4_PARAM.getCode();

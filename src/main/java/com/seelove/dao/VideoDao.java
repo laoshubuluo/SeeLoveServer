@@ -28,7 +28,7 @@ public interface VideoDao {
     int findUserVideoCount(@Param("userId") Long userId);
 
     @SelectProvider(type = SqlProvider.class, method = "videoFindAllByUserList")
-    List<Video> findAllByUserList(@Param("userList") List<User> userList);
+    List<Video> findAllByUserList(@Param("dataIndexStart") int dataIndexStart, @Param("dataIndexEnd") int dataIndexEnd, @Param("userList") List<User> userList);
 
     @Insert("insert into videoinfo (" +
             "videoTitle,videoTime,videoImg,videoUrl,videoPlayTime,userId,remark" +

@@ -15,6 +15,22 @@ public class UserFindAllRspInfo extends ResponseInfo {
     private int isEndPage; // 是否是最后一页 1：是 0：否
     private List<UserDetail> userDetailList;
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getIsEndPage() {
+        return isEndPage;
+    }
+
+    public void setIsEndPage(boolean isEndPage) {
+        this.isEndPage = isEndPage ? 1 : 0;
+    }
+
     public List<UserDetail> getUserDetailList() {
         return userDetailList;
     }

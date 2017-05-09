@@ -6,8 +6,10 @@ import com.seelove.dao.VideoDao;
 import com.seelove.entity.local.user.User;
 import com.seelove.entity.local.user.UserDetail;
 import com.seelove.entity.local.video.Video;
+import com.seelove.entity.network.entity.DataPage;
 import com.seelove.entity.network.request.*;
 import com.seelove.entity.network.response.*;
+import com.seelove.utils.DataPageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class NewsService {
     }
 
     public NewsFindAllRspInfo findAll(NewsFindAllActionInfo actionInfo) {
+        DataPage dataPage = DataPageUtil.getPage(actionInfo.getPageNumber(), actionInfo.getDataGetType());
         List<UserDetail> userDetailList = new ArrayList<>();
         // 获取我关注的人
         List<User> userList = followDao.findByUserId(actionInfo.getUserId());
@@ -54,7 +57,7 @@ public class NewsService {
             userMap.put(user.getUserId(), user);
         }
         // 获取所有人的所有视频
-        List<Video> videoList = videoDao.findAllByUserList(userList);
+        List<Video> videoList = videoDao.findAllByUserList(dataPage.getDataIndexStart(), dataPage.getDataIndexEnd(), userList);
         // 所有人的所有视频为空，则获取默认视频
         if (null == videoList || 0 == videoList.size()) {
             return findDefalut(actionInfo);
@@ -70,6 +73,8 @@ public class NewsService {
         NewsFindAllRspInfo rspInfo = new NewsFindAllRspInfo();
         rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserDetailList(userDetailList);
+        rspInfo.setCurrentPage(dataPage.getCurrentPage());
+        rspInfo.setIsEndPage(DataPageUtil.isEndPage(userDetailList.size()));
         return rspInfo;
     }
 
@@ -91,6 +96,8 @@ public class NewsService {
         NewsFindAllRspInfo rspInfo = new NewsFindAllRspInfo();
         rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserDetailList(userDetailList);
+        rspInfo.setCurrentPage(1);
+        rspInfo.setIsEndPage(true);
         return rspInfo;
     }
 }

@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -36,7 +33,7 @@ public class SystemService {
         NewVersionRspInfo rspInfo = new NewVersionRspInfo();
         Properties prop = new Properties();
         try {
-            InputStream in = new BufferedInputStream(new FileInputStream(propFile));
+            InputStreamReader in = new InputStreamReader(new FileInputStream(propFile), "UTF-8");
             prop.load(in);
 
             rspInfo.initSuccess(actionInfo.getActionId());

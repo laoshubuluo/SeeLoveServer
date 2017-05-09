@@ -12,6 +12,7 @@ import com.seelove.entity.local.system.SecurityCode;
 import com.seelove.entity.local.user.User;
 import com.seelove.entity.local.user.UserDetail;
 import com.seelove.entity.local.video.Video;
+import com.seelove.entity.network.entity.DataPage;
 import com.seelove.entity.network.entity.User4QQ;
 import com.seelove.entity.network.entity.User4Wechat;
 import com.seelove.entity.network.request.UserFindAllActionInfo;
@@ -23,6 +24,7 @@ import com.seelove.entity.network.response.UserFindDetailRspInfo;
 import com.seelove.entity.network.response.UserRegisterLoginRspInfo;
 import com.seelove.entity.network.response.UserUpdateRspInfo;
 import com.seelove.manager.RongCloudManager;
+import com.seelove.utils.DataPageUtil;
 import com.seelove.utils.GsonUtil;
 import com.seelove.utils.StringUtil;
 import io.rong.models.TokenResult;
@@ -176,27 +178,9 @@ public class UserService {
     }
 
     public UserFindAllRspInfo findAll(UserFindAllActionInfo actionInfo) {
-        int dataIndexStart = 0;
-        int dataIndexEnd = 0;
-        int currentPage = 0;
-        if (0 == actionInfo.getPageNumber()) {
-            currentPage = 1;
-        } else {
-            // 上一页
-            if (DataGetType.UP.getCode() == actionInfo.getDataGetType()) {
-                currentPage = actionInfo.getPageNumber() - 1;
-            }
-            // 下一页
-            else if (DataGetType.DOWN.getCode() == actionInfo.getDataGetType()) {
-                currentPage = actionInfo.getPageNumber() + 1;
-            }
-        }
-        currentPage = currentPage <= 1 ? 1 : currentPage;
-        dataIndexStart = Constant.DATA_COUNT_OF_PAGE * (currentPage - 1);
-        dataIndexEnd = Constant.DATA_COUNT_OF_PAGE * currentPage;
-
+        DataPage dataPage = DataPageUtil.getPage(actionInfo.getPageNumber(), actionInfo.getDataGetType());
         List<UserDetail> userDetailList = new ArrayList<>();
-        List<User> userList = userDao.findAll(dataIndexStart, dataIndexEnd, actionInfo.getAgeStart(), actionInfo.getAgeEnd(), actionInfo.getSex(), actionInfo.getCityCode());
+        List<User> userList = userDao.findAll(dataPage.getDataIndexStart(), dataPage.getDataIndexEnd(), actionInfo.getAgeStart(), actionInfo.getAgeEnd(), actionInfo.getSex(), actionInfo.getCityCode());
         // 拼接数据
         for (User user : userList) {
             if (user.getUserId() == actionInfo.getUserId()) {
@@ -218,6 +202,8 @@ public class UserService {
         UserFindAllRspInfo rspInfo = new UserFindAllRspInfo();
         rspInfo.initSuccess(actionInfo.getActionId());
         rspInfo.setUserDetailList(userDetailList);
+        rspInfo.setCurrentPage(dataPage.getCurrentPage());
+        rspInfo.setIsEndPage(DataPageUtil.isEndPage(userList.size()));
         return rspInfo;
     }
 

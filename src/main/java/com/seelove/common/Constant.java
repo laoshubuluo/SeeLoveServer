@@ -8,5 +8,5 @@ public class Constant {
     public static final String LOG_REQUEST = "[-----request-----] ";
     public static final String LOG_RESPONSE = "[-----response-----] ";
 
-    public static final int DATA_COUNT_OF_PAGE = 4; // 分页数据
+    public static final int DATA_COUNT_OF_PAGE = 20; // 分页数据
 }

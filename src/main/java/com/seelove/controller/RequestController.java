@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
 /**
  * 请求回调接口
@@ -40,6 +44,11 @@ public class RequestController {
     private SecurityCodeService securityCodeService;
     @Resource
     private SystemService systemService;
+
+    public RequestController() {
+        logger.info("seelove server start");
+        initSystemProfiles();
+    }
 
     @RequestMapping(value = "/request", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -127,5 +136,41 @@ public class RequestController {
         logger.info(Constant.LOG_RESPONSE + ": " + response.toString());
         return GsonUtil.toJson(response);
     }
-}
 
+    /**
+     * 初始化系统配置文件
+     */
+    private void initSystemProfiles() {
+        Properties prop;
+        String propFile;
+        // 系统配置
+        prop = new Properties();
+        propFile = getClass().getResource("/").getPath() + File.separator + "system" + File.separator + "system.properties";
+        try {
+            InputStreamReader in = new InputStreamReader(new FileInputStream(propFile), "UTF-8");
+            prop.load(in);
+            Constant.DATA_COUNT_OF_PAGE = Integer.parseInt(prop.getProperty("dataCountOfPage"));
+            Constant.userDefaultBigImage = prop.getProperty("userDefaultBigImage");
+            in.close();
+            logger.info("seelove init system profiles success: " + Constant.DATA_COUNT_OF_PAGE + " | " + Constant.userDefaultBigImage);
+        } catch (Throwable e) {
+            logger.error("seelove init system profiles error", e);
+        }
+        // 新版本配置
+        prop = new Properties();
+        propFile = getClass().getResource("/").getPath() + File.separator + "system" + File.separator + "newVersion.properties";
+        try {
+            InputStreamReader in = new InputStreamReader(new FileInputStream(propFile), "UTF-8");
+            prop.load(in);
+            Constant.versionCode = prop.getProperty("versionCode");
+            Constant.versionName = prop.getProperty("versionName");
+            Constant.isForced = prop.getProperty("isForced");
+            Constant.downloadUrl = prop.getProperty("downloadUrl");
+            Constant.des = prop.getProperty("des");
+            in.close();
+            logger.info("seelove init new version profiles success: " + Constant.versionCode + " | " + Constant.versionName + " | " + Constant.downloadUrl);
+        } catch (Throwable e) {
+            logger.error("seelove init new version profiles error", e);
+        }
+    }
+}

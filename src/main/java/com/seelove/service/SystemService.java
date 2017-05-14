@@ -1,13 +1,12 @@
 package com.seelove.service;
 
+import com.seelove.common.Constant;
 import com.seelove.entity.network.request.NewVersionActionInfo;
 import com.seelove.entity.network.response.NewVersionRspInfo;
+import com.seelove.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.io.*;
-import java.util.Properties;
 
 /**
  * 系统服务
@@ -29,23 +28,16 @@ public class SystemService {
      * @return
      */
     public NewVersionRspInfo getNewVersion(NewVersionActionInfo actionInfo) {
-        String propFile = getClass().getResource("/").getPath() + File.separator + "system" + File.separator + "newVersion.properties";
         NewVersionRspInfo rspInfo = new NewVersionRspInfo();
-        Properties prop = new Properties();
-        try {
-            InputStreamReader in = new InputStreamReader(new FileInputStream(propFile), "UTF-8");
-            prop.load(in);
-
-            rspInfo.initSuccess(actionInfo.getActionId());
-            rspInfo.setVersionCode(prop.getProperty("versionCode"));
-            rspInfo.setVersionName(prop.getProperty("versionName"));
-            rspInfo.setIsForced(prop.getProperty("isForced"));
-            rspInfo.setDownloadUrl(prop.getProperty("downloadUrl"));
-            rspInfo.setDes(prop.getProperty("des"));
-
-            in.close();
-        } catch (Throwable e) {
+        if (StringUtil.isNullOrBlank(Constant.versionCode) || StringUtil.isNullOrBlank(Constant.versionName)) {
             rspInfo.initError4System(actionInfo.getActionId());
+        } else {
+            rspInfo.initSuccess(actionInfo.getActionId());
+            rspInfo.setVersionCode(Constant.versionCode);
+            rspInfo.setVersionName(Constant.versionName);
+            rspInfo.setIsForced(Constant.isForced);
+            rspInfo.setDownloadUrl(Constant.downloadUrl);
+            rspInfo.setDes(Constant.des);
         }
         return rspInfo;
     }

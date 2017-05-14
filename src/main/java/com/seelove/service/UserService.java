@@ -141,6 +141,7 @@ public class UserService {
                     user.setCityName(user4QQ.getCityName());
                     break;
             }
+            user.setBigImg(Constant.userDefaultBigImage);// 设置默认背景大图
             userDao.create(user);
 
             // 获取融云token并更新数据库

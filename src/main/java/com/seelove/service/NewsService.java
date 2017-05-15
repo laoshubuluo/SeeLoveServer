@@ -46,7 +46,7 @@ public class NewsService {
         List<User> userList = followDao.findByUserId(actionInfo.getUserId());
         // 我关注的人为空，则获取默认视频
         if (null == userList || 0 == userList.size()) {
-            return findDefalut(actionInfo);
+            return findDefault(actionInfo);
         }
         // 增加自己
         User my = userDao.findById(actionInfo.getUserId());
@@ -60,7 +60,7 @@ public class NewsService {
         List<Video> videoList = videoDao.findAllByUserList(dataPage.getDataIndexStart(), dataPage.getDataIndexEnd(), userList);
         // 所有人的所有视频为空，则获取默认视频
         if (null == videoList || 0 == videoList.size()) {
-            return findDefalut(actionInfo);
+            return findDefault(actionInfo);
         }
         // 拼接视频和人物
         for (Video video : videoList) {
@@ -84,9 +84,11 @@ public class NewsService {
      * @param actionInfo
      * @return
      */
-    private NewsFindAllRspInfo findDefalut(NewsFindAllActionInfo actionInfo) {
+    private NewsFindAllRspInfo findDefault(NewsFindAllActionInfo actionInfo) {
+        User my = userDao.findById(actionInfo.getUserId());
+        String sex = (null == my) ? "1" : my.getSex();
         List<UserDetail> userDetailList = new ArrayList<>();
-        List<Video> videoList = videoDao.findCount5();
+        List<Video> videoList = videoDao.findCount5BySex(sex);
         for (Video video : videoList) {
             UserDetail userDetail = new UserDetail();
             userDetail.setUser(userDao.findById(video.getUserId()));

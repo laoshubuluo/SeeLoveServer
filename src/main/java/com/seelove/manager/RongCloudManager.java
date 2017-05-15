@@ -10,8 +10,8 @@ import io.rong.models.TokenResult;
  * 融云管理器
  */
 public class RongCloudManager {
-    String appKey = "8luwapkv8tr4l";//替换成您的appkey
-    String appSecret = "C0mrXCvUnNEUTr";//替换成匹配上面key的secret
+    String appKey = "8brlm7uf8jdq3";//替换成您的appkey
+    String appSecret = "3rqp9XRPyPLSC";//替换成匹配上面key的secret
 
     private static RongCloudManager instance;
     private RongCloud rongCloud;

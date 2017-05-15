@@ -18,8 +18,8 @@ public interface VideoDao {
     @Select("select v.* from videoinfo v, user_video uv where uv.userId=#{userId} and uv.videoId = v.videoId")
     List<Video> findByUser(@Param("userId") Long userId);
 
-    @Select("select * from videoinfo order by videoId desc limit 0,5")
-    List<Video> findCount5();
+    @Select("select v.* from videoinfo v, userinfo u, user_video uv where u.sex != #{sex} and u.userId = uv.userId and uv.videoId = v.videoId order by v.videoId desc limit 0,5")
+    List<Video> findCount5BySex(@Param("sex") String sex);
 
     @Select("select v.* from videoinfo v, user_video uv where uv.userId=#{userId} and uv.isDefault = 1 and uv.videoId = v.videoId limit 0,1")
     Video findDefault(@Param("userId") Long userId);

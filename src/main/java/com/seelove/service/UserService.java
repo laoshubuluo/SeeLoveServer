@@ -112,7 +112,11 @@ public class UserService {
                 case User.ACCOUNT_TYPE_PHONE:
                     user.setAccountType(User.ACCOUNT_TYPE_PHONE);
                     user.setAccount(actionInfo.getPhoneNumber());
-                    user.setNickName(actionInfo.getPhoneNumber());
+                    String nickName = actionInfo.getPhoneNumber();
+                    if (StringUtil.isNotBlank(nickName) && nickName.length() > 10) {
+                        nickName = nickName.substring(0, 4) + "****" + nickName.substring(8, nickName.length());
+                    }
+                    user.setNickName(nickName);
                     break;
                 case User.ACCOUNT_TYPE_WECHAT:
                     //  TODO by L.jinzhu  for 待解析

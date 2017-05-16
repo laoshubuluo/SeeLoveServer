@@ -20,4 +20,14 @@ public class FollowFindAllRspInfo extends ResponseInfo {
     public void setUserList(List<User> userList) {
         this.userList = userList;
     }
+
+    @Override
+    public String toString() {
+        return "FollowFindAllRspInfo{" +
+                "actionId=" + actionId +
+                ", statusCode=" + statusCode +
+                ", statusMsg='" + statusMsg + '\'' +
+                ", userList=" + userList +
+                '}';
+    }
 }

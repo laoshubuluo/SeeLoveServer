@@ -34,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -182,6 +183,10 @@ public class UserService {
         DataPage dataPage = DataPageUtil.getPage(actionInfo.getPageNumber(), actionInfo.getDataGetType());
         List<UserDetail> userDetailList = new ArrayList<>();
         List<User> userList = userDao.findAll(dataPage.getDataIndexStart(), dataPage.getDataIndexEnd(), actionInfo.getAgeStart(), actionInfo.getAgeEnd(), actionInfo.getSex(), actionInfo.getCityCode());
+        // 打乱顺序
+        if (null != userList) {
+            Collections.shuffle(userList);
+        }
         // 拼接数据
         for (User user : userList) {
             if (user.getUserId() == actionInfo.getUserId()) {

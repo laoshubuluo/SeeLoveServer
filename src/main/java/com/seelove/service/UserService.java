@@ -193,9 +193,9 @@ public class UserService {
         }
         // 拼接数据
         for (User user : userList) {
-            if (user.getUserId() == actionInfo.getUserId()) {
-                continue;// 用户自己不予展示
-            }
+//            if (user.getUserId() == actionInfo.getUserId()) {
+//                continue;// 用户自己不予展示
+//            }
             UserDetail userDetail = new UserDetail();
             // 綁定用户
             userDetail.setUser(user);

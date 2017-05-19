@@ -176,7 +176,7 @@ public class RequestController {
             Constant.downloadUrl = prop.getProperty("downloadUrl");
             Constant.des = prop.getProperty("des");
             in.close();
-            logger.info("seelove init new version profiles success: " + Constant.versionCode + " | " + Constant.versionName + " | " + Constant.downloadUrl);
+            logger.info("seelove init new version profiles success: versionCode: " + Constant.versionCode + " | versionName: " + Constant.versionName + " | downloadUrl: " + Constant.downloadUrl);
         } catch (Throwable e) {
             logger.error("seelove init new version profiles error", e);
         }

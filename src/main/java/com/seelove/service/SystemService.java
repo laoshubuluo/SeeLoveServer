@@ -2,7 +2,9 @@ package com.seelove.service;
 
 import com.seelove.common.Constant;
 import com.seelove.entity.network.request.NewVersionActionInfo;
+import com.seelove.entity.network.request.VideoNamesActionInfo;
 import com.seelove.entity.network.response.NewVersionRspInfo;
+import com.seelove.entity.network.response.VideoNamesRspInfo;
 import com.seelove.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,23 @@ public class SystemService {
             rspInfo.setIsForced(Constant.isForced);
             rspInfo.setDownloadUrl(Constant.downloadUrl);
             rspInfo.setDes(Constant.des);
+        }
+        return rspInfo;
+    }
+
+    /**
+     * 视频名称列表
+     *
+     * @param actionInfo
+     * @return
+     */
+    public VideoNamesRspInfo getVideoNames(VideoNamesActionInfo actionInfo) {
+        VideoNamesRspInfo rspInfo = new VideoNamesRspInfo();
+        if (StringUtil.isNullOrBlank(Constant.videoNames)) {
+            rspInfo.initError4System(actionInfo.getActionId());
+        } else {
+            rspInfo.initSuccess(actionInfo.getActionId());
+            rspInfo.setVideoNames(Constant.videoNames);
         }
         return rspInfo;
     }

@@ -1,5 +1,8 @@
 package com.seelove.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by liangjinzhu on 17/4/10.
  * 公共数据
@@ -20,4 +23,7 @@ public class Constant {
     public static String isForced = "";
     public static String downloadUrl = "";
     public static String des = "";
+
+    // 视频名称列表
+    public static String videoNames = "";
 }

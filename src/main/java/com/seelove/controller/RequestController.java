@@ -8,6 +8,7 @@ import com.seelove.entity.network.request.base.RequestInfo;
 import com.seelove.entity.network.response.base.ResponseInfo;
 import com.seelove.service.*;
 import com.seelove.utils.GsonUtil;
+import com.seelove.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.Properties;
 
 /**
@@ -128,6 +130,11 @@ public class RequestController {
                 NewVersionActionInfo newVersionActionInfo = GsonUtil.fromJson(actionInfoStr, NewVersionActionInfo.class);
                 response = systemService.getNewVersion(newVersionActionInfo);
                 break;
+            // 视频名称列表
+            case RequestCode.SYSTEM_VIDEO_NAMES:
+                VideoNamesActionInfo videoNamesActionInfo = GsonUtil.fromJson(actionInfoStr, VideoNamesActionInfo.class);
+                response = systemService.getVideoNames(videoNamesActionInfo);
+                break;
             default:
                 response = new ResponseInfo();
                 response.initError4Param(requestInfo.getActionInfo().getActionId());
@@ -151,8 +158,9 @@ public class RequestController {
             prop.load(in);
             Constant.DATA_COUNT_OF_PAGE = Integer.parseInt(prop.getProperty("dataCountOfPage"));
             Constant.userDefaultBigImage = prop.getProperty("userDefaultBigImage");
+            Constant.videoNames = prop.getProperty("videoNames");
             in.close();
-            logger.info("seelove init system profiles success: " + Constant.DATA_COUNT_OF_PAGE + " | " + Constant.userDefaultBigImage);
+            logger.info("seelove init system profiles success: dataCountOfPage: " + Constant.DATA_COUNT_OF_PAGE + " | userDefaultBigImage: " + Constant.userDefaultBigImage + " | videoNames: " + Constant.videoNames);
         } catch (Throwable e) {
             logger.error("seelove init system profiles error", e);
         }

@@ -308,4 +308,21 @@ public class UnitTestController {
         System.out.println("=============== 请求获得响应 =============================================");
         System.out.println("====" + result);
     }
+
+    @org.junit.Test
+    public void videoNames() throws Exception {
+        VideoNamesActionInfo actionInfo = new VideoNamesActionInfo(RequestCode.SYSTEM_VIDEO_NAMES);
+        requestInfo.setActionInfo(actionInfo);
+        String postJson = GsonUtil.toJson(requestInfo);
+        System.out.println("=============== 参数准备完成 =============================================");
+        System.out.println("====" + postJson);
+
+        ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders.post(requestUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(postJson));
+        MvcResult mvcResult = resultActions.andReturn();
+        String result = mvcResult.getResponse().getContentAsString();
+        System.out.println("=============== 请求获得响应 =============================================");
+        System.out.println("====" + result);
+    }
 }
